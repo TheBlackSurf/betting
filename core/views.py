@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from .models import *
 from .forms import VoteForm
 from datetime import datetime
-
+ 
 def allvote(request):
     User = get_user_model()
     votes = Vote.objects.all()
@@ -26,13 +26,12 @@ def alluser(request):
 def userdetail(request,pk):
     User = get_user_model()
     votes = Vote.objects.all()
-    users = User.objects.get(pk=pk)
+    users = User.objects.get(id=pk)
     context = {
         'users':users,
         'votes':votes,
     }
     return render(request, 'core/user/user-detail.html',context)
-
 
 def updatevote(request, pk):
     votes = Vote.objects.get(pk=pk)
@@ -66,12 +65,16 @@ def vote(request, pk):
     }
     return render(request, 'core/edit.html', context)
 
-
 def postdetail(request):
     post = Post.objects.all()
+    User = get_user_model()
+    users = User.objects.all()
+    
     context = {
         'post':post,
         'today' : datetime.now(),
+        'users':users,
+        'count': Post.objects.count()
     }
     return render(request, 'core/dash.html', context)
 
