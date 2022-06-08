@@ -1,11 +1,37 @@
 from django.shortcuts import redirect, render
-
-from .models import Post, Vote
+from django.contrib.auth import get_user_model
+from .models import *
 from .forms import VoteForm
-
 from datetime import datetime
 
+def allvote(request):
+    User = get_user_model()
+    votes = Vote.objects.all()
+    users = User.objects.all()
+    context = {
+        'users':users,
+        'votes':votes,
+        'today' : datetime.now(),
+    }
+    return render(request, 'core/all-vote.html',context)
 
+def alluser(request):
+    User = get_user_model()
+    users = User.objects.all()
+    context = {
+        'users':users,
+    }
+    return render(request, 'core/user/list-user.html',context)
+
+def userdetail(request,pk):
+    User = get_user_model()
+    votes = Vote.objects.all()
+    users = User.objects.get(pk=pk)
+    context = {
+        'users':users,
+        'votes':votes,
+    }
+    return render(request, 'core/user/user-detail.html',context)
 
 
 def updatevote(request, pk):
