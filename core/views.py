@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.admin.views.decorators import staff_member_required
 
 def logout_request(request):
 	logout(request)
@@ -59,6 +59,8 @@ def allvote(request):
     }
     return render(request, 'core/all-vote.html',context)
 
+
+@staff_member_required(login_url='login')
 def alluser(request):
     User = get_user_model()
     users = User.objects.all()
@@ -67,6 +69,8 @@ def alluser(request):
     }
     return render(request, 'core/user/list-user.html',context)
 
+
+@staff_member_required(login_url='login')
 def userdetail(request,pk):
     User = get_user_model()
     votes = Vote.objects.all()
@@ -77,6 +81,8 @@ def userdetail(request,pk):
     }
     return render(request, 'core/user/user-detail.html',context)
 
+
+@login_required(login_url='login')
 def updatevote(request, pk):
     votes = Vote.objects.get(pk=pk)
     form = VoteForm(instance=votes)
@@ -91,6 +97,8 @@ def updatevote(request, pk):
     }
     return render(request, 'core/update.html', context)
 
+
+@login_required(login_url='login')
 def vote(request, pk):
     form = VoteForm()
     post = Post.objects.get(pk=pk)
@@ -108,7 +116,7 @@ def vote(request, pk):
         'votes':votes
     }
     return render(request, 'core/edit.html', context)
-
+@login_required(login_url='login')
 def postdetail(request):
     post = Post.objects.all()
     User = get_user_model()
