@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -45,7 +44,7 @@
 
 <body class="bg-black-alt font-sans leading-normal tracking-normal">
 
-  {% include 'core/nav.html' %}
+    {% include 'core/nav.html' %}
 
     <!--Container-->
     <div class="container w-full mx-auto pt-20">
@@ -57,7 +56,7 @@
             <div class="flex flex-wrap mt-24">
                 <div class="w-full md:w-1/2 xl:w-1/3 p-3">
                     <!--Metric Card-->
-                    
+
                     <div class="bg-gray-900 border border-gray-800 rounded shadow p-2">
                         <div class="flex flex-row items-center">
                             <div class="flex-shrink pr-4">
@@ -66,11 +65,11 @@
                             </div>
                             <div class="flex-1 text-right md:text-center">
                                 <h5 class="font-bold uppercase text-gray-400">Wszystkie wydarzenia</h5>
-                                <h3 class="font-bold text-3xl text-gray-600">{{posts}} <span
-                                        class="text-green-500"><i class="fas fa-caret-up"></i></span></h3>
+                                <h3 class="font-bold text-3xl text-gray-600">{{posts}} <span class="text-green-500"><i
+                                            class="fas fa-caret-up"></i></span></h3>
                             </div>
                         </div>
-                        
+
                     </div>
                     <!--/Metric Card-->
                 </div>
@@ -91,13 +90,9 @@
                     </div>
                     <!--/Metric Card-->
                 </div>
-
-                
-
-
                 <h4 style="color:white;"><b>Czas Teraźniejszy: {{ today }} </b></h4>
-
-                <table style="background-color: #111827;" class="table table-dark container">
+                <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
+                <table id="myTable" style="background-color: #111827;" class="table table-dark container">
                     <thead>
                         <tr>
                             <th scope="col">Koniec Obstawiania</th>
@@ -110,58 +105,32 @@
                         </tr>
                     </thead>
                     <tbody>
-
-
-
-    
-
-
                         {% for post in post  %}
                         <tr>
                             <th scope="row">{{post.created_on}}</th>
                             <td><a href="">{{ post.body }}</a></td>
-                            
-                           
                             <td>
                                 {% for v in post.vote_set.all  %}
-                                                                        
-                                    {% if v.author == request.user %}
-                                    {{v.name}}  
-                                    
-                                        {% if v.post.created_on|date:'Y-m-d H:i:s' >= today|date:'Y-m-d H:i:s' %}
-                                        <a href="{% url 'edit-vote' v.id %}">Edytuj</a>
-                                        {% endif %}
-                                        
-                                        
-                                    {% endif %}
-                                
-                                        
-                               
-                                    {% endfor %}
-                                </td>   
-                  
-                                
-                                {% if post.vote_set.name %}
-                                    
+                                {% if v.author == request.user %}
+                                {{v.name}}
+                                {% if v.post.created_on|date:'Y-m-d H:i:s' >= today|date:'Y-m-d H:i:s' %}
+                                <a href="{% url 'edit-vote' v.id %}">Edytuj</a>
                                 {% endif %}
-                                    
-                           
-                           
-                            
+                                {% endif %}
+                                {% endfor %}
+                            </td>
 
-
+                            {% if post.vote_set.name %}
+                            {% endif %}
                             <td>
                                 {% if post.created_on|date:'Y-m-d H:i:s' >= today|date:'Y-m-d H:i:s' %}
                                 <a name="" id="" class="btn btn-primary" href="{% url 'edit' post.id %}"
-                                role="button">Dodaj Wynik</a>
+                                    role="button">Dodaj Wynik</a>
                                 {% else %}
                                 koniec
                                 {% endif %}
                             </td>
                         </tr>
-
-
-
                         {% endfor %}
 
                     </tbody>
@@ -184,7 +153,16 @@
     <!--/container-->
 
 
-
+    <script>
+        $(document).ready(function () {
+            $("#search").on("keyup", function () {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        });
+    </script>
     <script>
         /*Toggle dropdown list*/
         /*https://gist.github.com/slavapas/593e8e50cf4cc16ac972afcbad4f70c8*/
@@ -244,12 +222,12 @@
             return false;
         }
     </script>
-<script>
-    function myrefresh() {
-    window.location.reload();
-}
-setTimeout('myrefresh()', 10000); // Specify one refresh per second
-</script>
+    <script>
+        function myrefresh() {
+            window.location.reload();
+        }
+        setTimeout('myrefresh()', 10000); // Specify one refresh per second
+    </script>
 </body>
 
 </html>

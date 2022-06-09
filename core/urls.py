@@ -10,6 +10,10 @@ urlpatterns = [
     # users
     path('user/<int:pk>', views.userdetail, name='userdetail'),
     path('users/', views.alluser, name='alluser'),
+    # register login logout
+    path("register", views.register_request, name="register"),
+    path("login", views.login_request, name="login"),
+    path("logout", views.logout_request, name= "logout"),
 
 ]
 
