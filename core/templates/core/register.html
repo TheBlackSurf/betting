@@ -1,10 +1,58 @@
-{% load crispy_forms_tags %}  
-<div class="container py-5">
-	<h1>Register</h1>
-	<form method="POST">
-		{% csrf_token %}
-		{{ register_form|crispy }}                    
-		<button class="btn btn-primary" type="submit">Register</button>
-	</form>
-	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
-</div>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<style>
+    body {
+        background-color: #191919;
+    }
+    
+    .logo {
+        text-align: center;
+        width: 200px;
+        padding: 10px;
+    }
+</style>
+<div style="margin-top: 100px; class=" container d-flex justify-content-center align-self-center mt-12 ">
+        <div class="row centered-form align-self-center ">
+        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4 align-self-center ">
+            <div style="background-color: #111827; border-radius: 20px; "  class="panel panel-default ">
+                <img class="logo " src="http://1.bp.blogspot.com/-vMN-nDGDvFg/Ucoylp9O-sI/AAAAAAAAae0/6wQq6KT65zQ/s1600/Ekstraklasa+logo+2013.png " alt=" ">
+                
+        		<div style="background-color: #111827; color: aliceblue; " class="panel-heading ">
+			    		<h3  style="background-color: #111827; color: aliceblue; " class="panel-title text-white ">Zarejestruj się! <small>To darmowe!</small></h3>
+			 			</div>
+			 			<div class="panel-body ">
+			    		<form role="form" method="POST">
+                            {% csrf_token %}
+			    			<div class="form-group ">
+                                {{register_form.username}}
+			    			</div>
+
+			    			<div class="form-group ">
+                                {{register_form.email}}
+			    			</div>
+
+			    			<div class="row ">
+			    				<div class="col-xs-6 col-sm-6 col-md-6 ">
+			    					<div class="form-group ">
+                                        {{register_form.password1}}
+			    					</div>
+			    				</div>
+			    				<div class="col-xs-6 col-sm-6 col-md-6 ">
+			    					<div class="form-group ">
+                                        {{register_form.password2}}
+			    					</div>
+			    				</div>
+			    			</div>
+			    			
+			    			<input type="submit" value="Zarejestruj Się" class="btn btn-info btn-block ">
+                            <p class="text-center ">Masz już konto? <a href="/login ">Zaloguj się</a>.</p>
+			    		
+			    		</form>
+			    	</div>
+	    		</div>
+    		</div>
+    	</div>
+    </div>

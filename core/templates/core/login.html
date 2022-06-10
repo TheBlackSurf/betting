@@ -1,10 +1,53 @@
-{% load crispy_forms_tags %}         
-<div class="container py-5">
-    <h1>Login</h1>
-    <form method="POST">
-      {% csrf_token %}
-      {{ login_form|crispy }}
-      <button class="btn btn-primary" type="submit">Login</button>
-    </form>
-    <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
-  </div>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<script>
+    document.getElementById("$id_username").classList.add("form-control input-sm");
+    </script>
+    <style>
+        body{
+            background-color: #191919;
+        }
+        .logo{
+            text-align: center;
+            width: 200px;
+            padding: 10px;
+        }
+    </style>
+<div  style="margin-top: 100px; background-color: #191919;" class="d-flex align-items-center justify-content-center mt-24">
+    <div class="d-flex align-items-center justify-content-center">
+        <div class="d-flex align-items-center justify-content-center">
+
+            <div style="background-color:#191919;" class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4 align-self-center">
+                <div style="background-color:#111827;"  class="panel panel-default">
+                    <img class="logo" src="http://1.bp.blogspot.com/-vMN-nDGDvFg/Ucoylp9O-sI/AAAAAAAAae0/6wQq6KT65zQ/s1600/Ekstraklasa+logo+2013.png" alt="">
+                    
+                    <div style="color: white; background-color: #111827;" class="panel-heading">
+                        <h3 class="panel-title">Zaloguj się! <small></small></h3>
+                    </div>
+                    
+                    <div class="panel-body">
+                        <form  role="form" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <p style="color: white;">Nazwa Użytkownika</p>
+                                {{ login_form.username }}
+                            </div>
+    
+                            <div class="form-group">
+                                <p style="color: white;">Hasło</p>
+                                {{ login_form.password }}
+                            </div>
+    
+    
+                            <input type="submit" value="Zaloguj się" class="btn btn-info btn-block">
+                            <p class="text-center">Nie masz konta <a href="/register">Zarejestruj się</a>.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+</div>

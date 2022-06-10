@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -55,42 +53,44 @@
 
             <!--Console Content-->
 
-       <br>
-       <br>
-      <br>
-        <h2 class="text-white ml-3 items-center flex mb-10">Wszysy użytkownicy</h2>
-        <div class="container w-16 items-center">
+            <br>
+            <br>
+            <br>
+            <h2 class="text-white ml-3 items-center flex mb-10">Wszysy użytkownicy</h2>
+            <div class="container w-16 items-center">
+
+            </div>
+            <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
+            <table id="myTable" style="background-color: #111827;" class="table table-dark container">
+                <thead>
+                    <tr>
+                        <th scope="col"><b>Użytkownicy</b></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for user in users  %}
+                    <tr>
+                        <td class="text-capitalize" scope="row"><a href="{% url 'userdetail' user.id %}">
+                                <p>{{user.username}}</p>
+                            </a></td>
+                    </tr>
+                    {% endfor %}
+
+
+
+                </tbody>
+            </table>
+            <!--Divider-->
+            <hr class="border-b-2 border-gray-600 my-8 mx-4">
+
+
+
+
+            <!--/ Console Content-->
 
         </div>
-        <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
-        <table id="myTable" style="background-color: #111827;" class="table table-dark container">
-            <thead>
-              <tr>
-                <th scope="col"><b>Użytkownicy</b></th>
-
-              </tr>
-            </thead>
-            <tbody>
-                
-                {% for user in users  %}
-                <tr>
-                    <th class="text-capitalize" scope="row"><a href="{% url 'userdetail' user.id %}"><p>{{user.username}}</p></a></th>
-                  </tr>
-                {% endfor %}
-                    
-
-
-            </tbody>
-          </table>
-        <!--Divider-->
-        <hr class="border-b-2 border-gray-600 my-8 mx-4">
-
-
-
-
-        <!--/ Console Content-->
-
-    </div>
 
 
     </div>
