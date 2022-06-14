@@ -1,0 +1,108 @@
+{% extends 'core/main.html' %}
+{% block content %}
+
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+
+
+
+
+<section class="container">
+    <strong class="text-white"> Wszyskie Punkty: <span id="Tprice"></span></strong>
+    <input type="text" class="form-control form-control-lg table-filter" data-table="order-table" placeholder="Wyszukaj..." />
+  
+  
+  <br>
+    <table id="VendasHistoryTable" class="order-table table dark3Dtable">
+          <thead>
+        <tr class="text-white">
+          <th>Kolejka</th>
+          <th>Email</th>
+          <th></th>
+          <th>Punkty</th>
+             <th>date</th>
+        </tr>
+          </thead>
+  
+  
+        {% for k in kolejki  %}
+        <tr class="text-white">
+            <td>{{k.name}}</td>
+            <td>{{k.user}}</td>
+            <td></td>
+            <td>{{k.point}}</td>
+            <td>25/05/2020</td>
+        </tr>
+        {% endfor %}
+  
+    </table>
+<script>
+    (function() {
+        'use strict';
+    
+    var TableFilter = (function() {
+     var Arr = Array.prototype;
+            var input;
+      
+            function onInputEvent(e) {
+                input = e.target;
+                var table1 = document.getElementsByClassName(input.getAttribute('data-table'));
+                Arr.forEach.call(table1, function(table) {
+                    Arr.forEach.call(table.tBodies, function(tbody) {
+                        Arr.forEach.call(tbody.rows, filter);
+                    CalColumnHistDEPOSITO();
+                    });
+                });
+            }
+    
+            function filter(row) {
+                var text = row.textContent.toLowerCase();
+           //console.log(text);
+          var val = input.value.toLowerCase();
+          //console.log(val);
+                row.style.display = text.indexOf(val) === -1 ? 'none' : 'table-row';
+    
+            }
+    
+            return {
+                init: function() {
+                    var inputs = document.getElementsByClassName('table-filter');
+                    Arr.forEach.call(inputs, function(input) {
+                        input.oninput = onInputEvent;
+              
+                    });
+                }
+            };
+     
+        })();
+    
+      /*console.log(document.readyState);
+        document.addEventListener('readystatechange', function() {
+            if (document.readyState === 'complete') {
+          console.log(document.readyState);
+                TableFilter.init();
+            }
+        }); */
+      
+     TableFilter.init(); 
+    })();
+    
+    
+    
+    
+     function CalColumnHistDEPOSITO() {
+                var table = document.getElementById("VendasHistoryTable"); 
+                // var table = document.querySelectorAll("#table1 tr td:first-child");
+                var sumVal = 0;
+                for(var i = 1; i < table.rows.length; i++){
+                var row = table.rows[i];
+                if(row.style.display == 'table-row')
+                sumVal = sumVal + parseFloat(row.cells[3].innerHTML);
+                }
+                document.getElementById("Tprice").innerHTML = sumVal;
+      
+         }
+</script>
+{% endblock content %}

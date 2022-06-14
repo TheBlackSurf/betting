@@ -1,14 +1,25 @@
-from datetime import datetime
-
+from multiprocessing import context
+from django.utils import timezone
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import get_object_or_404, redirect, render
-
 from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm
 from .models import *
+
+
+@login_required(login_url="login")
+def kolejka(request):
+    User = get_user_model()
+    users = User.objects.all()
+    kolejki = Kolejka.objects.all()
+
+    context = {
+        'kolejki': kolejki,
+        'users': users,
+    }
+    return render(request, 'core/kolejka.html', context)
 
 
 def logout_request(request):
@@ -45,8 +56,12 @@ def register_request(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Registration successful.")
+            Profile.objects.create(
+                user=user
+            )
             return redirect("login")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
+        messages.error(
+            request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render(
         request=request,
@@ -80,6 +95,7 @@ def alluser(request):
 
 @staff_member_required(login_url="login")
 def userdetail(request, pk):
+
     User = get_user_model()
     votes = Vote.objects.all()
     users = User.objects.get(id=pk)
@@ -106,22 +122,33 @@ def updatevote(request, pk):
 
 
 @login_required(login_url="login")
-def vote(request, pk):
+def addvote(request, pk):
     form = VoteForm()
+    datetimes = datetime.now().strftime("%d.%m.%Y %H:%M")
     post = Post.objects.get(pk=pk)
+    posttimes = post.created_on.strftime("%d.%m.%Y %H:%M")
     votes = Vote.objects.all()
     votes.id = post.id
+
     if request.method == "POST":
         form = VoteForm(request.POST)
         if form.is_valid():
             form.instance.author = request.user
             form.instance.post = post
-            form.save()
+            if form.instance.post.created_on.strftime(
+                "%d.%m.%Y %H:%M"
+            ) >= timezone.now().strftime("%d.%m.%Y %H:%M"):
+                form.save()
+            else:
+                redirect("dash")
             return redirect("dash")
     context = {
         "form": form,
         "votes": votes,
         "post": post,
+        "datetimes": datetimes,
+        "posttimes": posttimes,
+        "today": datetime.now(),
     }
     return render(request, "core/edit.html", context)
 
@@ -145,7 +172,7 @@ def postdetail(request):
 def addpost(request):
     form = PostForm()
     if request.method == "POST":
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, initial={"kolejka": "kolejka"})
         if form.is_valid():
             form.instance.author = request.user
             form.save()
@@ -175,3 +202,15 @@ def deletevote(request, *args, **kwargs):
         return redirect("/")
 
     return render(request, "core/deletevote.html")
+
+
+# def settingsite(request):
+#     title = Title.objects.all()
+#     headers = HeaderCode.objects.all()
+#     footer = FooterCode.objects.all()
+#     context = {
+#         'title':title,
+#         'headers':headers,
+#         'footer':footer,
+#     }
+#     return render(request, 'core/main.html', context)

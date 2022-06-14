@@ -1,5 +1,15 @@
 from django.contrib import admin
-from .models import Post, Vote
+from .models import Post, Vote, Profile, Kolejka
+
+admin.site.register(Profile)
+
+@admin.register(Kolejka)
+class KolejkaAdmin(admin.ModelAdmin):
+    '''Admin View for Kolejka'''
+
+    list_display = ('name', 'user', 'point')
+    list_filter = ('name', 'user')
+
 
 
 @admin.register(Vote)

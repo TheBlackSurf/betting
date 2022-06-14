@@ -1,0 +1,112 @@
+{% extends 'core/main.html' %}
+{% block content %}
+
+
+
+
+<div class="container w-full mx-auto pt-20">
+
+    <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+
+
+        <div class="flex flex-wrap mt-24">
+            <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Metric Card-->
+
+                <div class="bg-gray-900 border border-gray-800 rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-shrink pr-4">
+                            <div class="rounded p-3 bg-green-600"><i class="fa fa-wallet fa-2x fa-fw fa-inverse"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-gray-400">Wszystkie wydarzenia</h5>
+                            <h3 class="font-bold text-3xl text-gray-600">{{posts}} <span class="text-green-500"><i
+                                        class="fas fa-caret-up"></i></span></h3>
+                        </div>
+                    </div>
+
+                </div>
+                <!--/Metric Card-->
+            </div>
+            <div class="w-full md:w-1/2 xl:w-1/3 p-3">
+                <!--Metric Card-->
+                <div class="bg-gray-900 border border-gray-800 rounded shadow p-2">
+                    <div class="flex flex-row items-center">
+                        <div class="flex-shrink pr-4">
+                            <div class="rounded p-3 bg-pink-600"><i class="fas fa-users fa-2x fa-fw fa-inverse"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 text-right md:text-center">
+                            <h5 class="font-bold uppercase text-gray-400">Zarejestrowani Użytkownicy</h5>
+                            <h3 class="font-bold text-3xl text-gray-600">{{users.count}} <span class="text-pink-500"><i
+                                        class="fas fa-exchange-alt"></i></span></h3>
+                        </div>
+                    </div>
+                </div>
+                <!--/Metric Card-->
+            </div>
+            <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
+            
+           <h4 class="text-white p-2"> <span id="val"></span></h4>
+
+            <table id="myTable" style="background-color: #111827;" class="table table-dark container">
+                <thead>
+                    <tr>
+                        <th scope="col">Kolejka</th>
+                        <th scope="col">Punkty</th>
+                        <th scope="col">Użytkownik</th>
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for k in kolejki %}
+                    <tr>
+                        
+                        {% if users.id == k.user.id  %}
+                        <td scope="row">{{k.name}}</td>
+                        <td scope="row">{{k.point}}</td>
+                        <td><a href="">{{ k.user }}</a></td>
+                        {% endif %}
+                            
+                      
+                        
+
+                        </td>
+                    </tr>
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Divider-->
+    <hr class="border-b-2 border-gray-600 my-8 mx-4">
+</div>
+</div>
+<script>
+    updateSubTotal(); // Initial call
+
+    function updateSubTotal() {
+      var table = document.getElementById("myTable");
+      let subTotal = Array.from(table.rows).slice(1).reduce((total, row) => {
+        return total + parseFloat(row.cells[1].innerHTML);
+      }, 0);
+      let subTotal2 = Array.from(table.rows).slice(1).reduce((total, row) => {
+        return total + parseFloat(row.cells[2].innerHTML);
+      }, 0);
+      document.getElementById("val").innerHTML = "Wszystkie Punkty: " + subTotal;
+    }
+    
+    function onClickRemove(deleteButton) {
+      let row = deleteButton.parentElement.parentElement;
+      row.parentNode.removeChild(row);
+      updateSubTotal(); // Call after delete
+    }
+</script>
+<script>
+   
+</script>
+{% endblock content %}

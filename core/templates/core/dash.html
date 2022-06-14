@@ -47,6 +47,7 @@
                         <table id="myTable" style="background-color: #111827;" class="table table-dark container">
                             <thead>
                                 <tr>
+                                    <th scope="col">Kolejka</th>
                                     <th scope="col">Koniec Obstawiania</th>
                                     <th scope="col">Wydarzenie</th>
                                     <!-- <th scope="col">ZA</th>
@@ -59,6 +60,7 @@
                             <tbody>
                                 {% for post in post %}
                                 <tr>
+                                    <td scope="row">{{post.kolejka}}</td>
                                     <td scope="row">{{post.created_on}}</td>
                                     <td><a href="">{{ post.body }}</a></td>
                                     <td>

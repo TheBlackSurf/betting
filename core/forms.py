@@ -91,7 +91,17 @@ class NewUserForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
-
+    # kolejka = forms.CharField(
+    #         required=True,
+    #         widget=forms.TextInput(
+    #             attrs={
+    #                 "type": "text",
+    #                 "name": "body",
+    #                 "class": "form-control input-sm",
+    #                 "placeholder": "Kolejka",
+    #             }
+    #         ),
+    #     )
     body = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -109,4 +119,9 @@ class PostForm(forms.ModelForm):
         """Meta definition for Postform."""
 
         model = Post
-        fields = ("body", "created_on")
+        fields = ("body", "created_on", "kolejka")
+    def clean_tank(self):
+            if not self['kolejka'].html_name in self.data:
+                return self.fields['kolejka'].initial
+            return self.cleaned_data['kolejka']
+        
