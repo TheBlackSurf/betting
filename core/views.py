@@ -1,3 +1,4 @@
+from datetime import datetime
 from multiprocessing import context
 from django.utils import timezone
 from django.contrib import messages
@@ -5,8 +6,19 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm
-from .models import *
+from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm
+from .models import Post, Profile, Kolejka, Vote
+
+
+@staff_member_required(login_url="login")
+def addkolejka(request):
+    form = KolejkaForm()
+    if request.method == "POST":
+        form = KolejkaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("kolejka")
+    return render(request, "core/add-kolejka.html", {"form": form})
 
 
 @login_required(login_url="login")

@@ -33,6 +33,9 @@
                             <div class="form-group">
                                 <p style="color: white;">Nazwa Użytkownika</p>
                                 {{ login_form.username }}
+                                {% if login_form.username.errors %}
+                                <script>window.alert("sometext");</script>
+                                {% endif %}
                             </div>
     
                             <div class="form-group">

@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     path("addpost/", views.addpost, name="addpost"),
+    path("addkolejka/", views.addkolejka, name="addkolejka"),
     path("deletepost/<int:pk>", views.deletepost, name="deletepost"),
     path("deletevote/<int:pk>", views.deletevote, name="deletevote"),
     path("", views.postdetail, name="dash"),

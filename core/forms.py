@@ -8,10 +8,16 @@ from .models import *
 
 class RFPAuthForm(AuthenticationForm):
     username = forms.CharField(
-        widget=TextInput(attrs={"class": "span2", "placeholder": "Email"})
+        widget=TextInput(attrs={"class": "form-control input-sm", "placeholder": "Nazwa Użytkownika"})
     )
     password = forms.CharField(
-        widget=PasswordInput(attrs={"class": "span2", "placeholder": "Password"})
+        widget=PasswordInput( attrs={
+                "type": "password",
+                "name": "password",
+                "class": "form-control input-sm",
+                "placeholder": "Hasło",
+                "id": "password",
+            })
     )
 
 
@@ -28,6 +34,7 @@ class VoteForm(forms.ModelForm):
 
         model = Vote
         fields = ("name",)
+
 
 
 class NewUserForm(UserCreationForm):
@@ -125,3 +132,8 @@ class PostForm(forms.ModelForm):
                 return self.fields['kolejka'].initial
             return self.cleaned_data['kolejka']
         
+class KolejkaForm(forms.ModelForm):
+    
+    class Meta:
+        model = Kolejka
+        fields = ('__all__')

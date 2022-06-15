@@ -61,7 +61,7 @@
                                 {% for post in post %}
                                 <tr>
                                     <td scope="row">{{post.kolejka}}</td>
-                                    <td scope="row">{{post.created_on}}</td>
+                                    <td scope="row">{{post.created_on|date:"Y-m-d H:i:s"}}</td>
                                     <td><a href="">{{ post.body }}</a></td>
                                     <td>
                                         {% for v in post.vote_set.all %} {% if v.author == request.user %} {{v.name}}

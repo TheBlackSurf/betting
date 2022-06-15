@@ -25,11 +25,10 @@
                         </svg>
                     </button>
                     <div id="userMenu" class="bg-gray-900 rounded shadow-md mt-2 absolute mt-12 top-0 right-0 min-w-full overflow-auto z-30 invisible">
+                        <br>
                         <ul class="list-reset">
-
-                            <li><a href="/logout" class="px-4 py-2 block text-gray-100 hover:bg-gray-800 no-underline hover:no-underline">Logout</a>
+                            <li><a href="/logout" class="px-4 py-2 block text-gray-100 hover:bg-gray-800 no-underline hover:no-underline">Wyloguj Się</a>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -83,6 +82,9 @@
             </ul>
 
             {% if user.is_superuser %}
+            <a href="{% url 'addkolejka' %}" class="btn btn-primary mx-2">
+                <span class="pb-1 md:pb-0 text-sm">Dodaj Punkty</span>
+            </a>
             <a href="{% url 'addpost' %}" class="btn btn-primary">
                 <span class="pb-1 md:pb-0 text-sm">Dodaj Wydarzenie</span>
             </a>
