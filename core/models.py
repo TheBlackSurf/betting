@@ -102,3 +102,12 @@ class Vote(models.Model):
 
 # class FooterCode(models.Model):
 #     footercode =models.TextField()
+
+
+class Regulation(models.Model):
+    
+    point = models.CharField(max_length=2000)
+    
+    def __str__(self):
+        return self.point
+    

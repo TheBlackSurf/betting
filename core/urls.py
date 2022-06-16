@@ -16,5 +16,8 @@ urlpatterns = [
     path("register", views.register_request, name="register"),
     path("login", views.login_request, name="login"),
     path("logout", views.logout_request, name="logout"),
-    path("kolejka/", views.kolejka, name="kolejka")
+    path("kolejka/", views.kolejka, name="kolejka"),
+    path("regulamin/", views.regulation, name="regulation"),
+    path("usun-regulamin/<int:pk>", views.deleteregulation, name="deleteregulation"),
+    path("edytuj-regulamin/<int:pk>", views.editregulation, name="editregulation"),
 ]

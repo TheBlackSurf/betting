@@ -1,0 +1,36 @@
+{% extends 'core/main.html' %} {% block content %}
+
+<br /><br />
+<br /><br />
+<br /><br />
+<br /><br />
+
+<div class="container p-4 ">
+    {% if user.is_superuser %}
+    <form action="" method="POST">
+        {% csrf_token %}
+        <div class="mb-6 container">
+            {{form.point}}
+            <button type="submit" class=" mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj</button>
+    
+        </div>
+    </form>    
+    {% endif %}
+    
+    <h3 class="text-white 2-xl pt-4 pb-2"><b>Regulamin Serwisu Ekstraklapa</b></h3>
+    {% for r in regulations  %}
+    <div class="flex">
+        <p class="text-white xl mx-4"> {{r.point}} <br> </p>
+        
+        {% if user.is_superuser %}
+        <a class="mx-2" href="{% url 'editregulation' r.id %}">Edytuj</a>
+        <a href="{% url 'deleteregulation' r.id %}">Usuń</a>            
+        {% endif %}
+            
+
+    </div>
+    {% endfor %}
+
+</div>
+  {% endblock content %}
+

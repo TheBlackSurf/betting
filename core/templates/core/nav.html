@@ -1,4 +1,4 @@
-<nav id="header" class="bg-gray-900 fixed w-full z-10 top-0 shadow">
+<nav id="header" class="bg-gray-900 fixed w-full  shadow">
   <div
     class="w-full container mx-auto flex flex-wrap items-center mt-0 pt-3 pb-3 md:pb-0"
   >
@@ -27,7 +27,7 @@
               alt="Avatar of User"
             />
             <span class="hidden md:inline-block text-gray-100"
-              >Hi, {{request.user}}</span
+              >Cześć, {{request.user}}</span
             >
             <svg
               class="pl-2 h-2 fill-current text-gray-100"
@@ -121,6 +121,23 @@
             <span class="pb-1 md:pb-0 text-sm">Punkty</span>
           </a>
         </li>
+        <li class="mr-6 my-2 md:my-0">
+          <a
+            href="/info"
+            class="block py-1 md:py-3 pl-1 align-middle text-blue-400 no-underline hover:text-gray-100 border-b-2 border-blue-400 hover:border-blue-400"
+          >
+            <span class="pb-1 md:pb-0 text-sm">Ogłoszenia</span>
+          </a>
+        </li>
+        <li class="mr-6 my-2 md:my-0">
+          <a
+            href="{% url 'regulation' %}"
+            class="block py-1 md:py-3 pl-1 align-middle text-blue-400 no-underline hover:text-gray-100 border-b-2 border-blue-400 hover:border-blue-400"
+          >
+            <span class="pb-1 md:pb-0 text-sm">Regulamin</span>
+          </a>
+        </li>
+
       </ul>
 
       {% if user.is_superuser %}

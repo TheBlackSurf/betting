@@ -6,3 +6,4 @@ class ProfilePointForm(forms.ModelForm):
     class Meta:
         model = ProfilePoint
         fields = ('__all__')
+

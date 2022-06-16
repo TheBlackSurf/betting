@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'import_export',
     
     'points',
+    'info'
 ]
 
 MIDDLEWARE = [

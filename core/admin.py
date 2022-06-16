@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Vote, Profile, Kolejka
+from .models import Post, Regulation, Vote, Profile, Kolejka
 from import_export import resources
 from import_export.admin import ExportActionMixin
 from import_export import resources
@@ -7,6 +7,7 @@ from import_export.fields import Field
 from import_export.admin import ExportActionMixin
 
 admin.site.register(Profile)
+admin.site.register(Regulation)
 
 
 class KolejkaResource(resources.ModelResource):

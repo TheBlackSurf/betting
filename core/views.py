@@ -6,9 +6,50 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm
-from .models import Post, Profile, Kolejka, Vote
+from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm, RegulationForm
+from .models import Post, Profile, Kolejka, Regulation, Vote
 
+@login_required(login_url="login")
+def regulation(request):
+    regulations = Regulation.objects.all()
+    form = RegulationForm()
+    if request.method == 'POST':
+        form = RegulationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('regulation')
+    context = {
+        'regulations': regulations,
+        'form':form
+    }
+    return render(request, 'core/regulamin.html', context)
+
+
+@staff_member_required(login_url="login")
+def editregulation(request, pk):
+    regulations = Regulation.objects.get(id=pk)
+    form = RegulationForm(instance=regulations)
+    if request.method == 'POST':
+        form = RegulationForm(request.POST, instance=regulations)
+        if form.is_valid():
+            form.save()
+            return redirect('regulation')
+    context = {
+        'regulations': regulations,
+        'form':form
+    }
+    return render(request, 'core/edit-regulamin.html', context)
+
+@staff_member_required(login_url="login")
+def deleteregulation(request, pk):
+    regulations = Regulation.objects.get(id=pk)
+    if request.method == 'POST':
+            regulations.delete()
+            return redirect('regulation')
+    context = {
+        'regulations': regulations,
+    }
+    return render(request, 'core/delete-regulamin.html', context)
 
 @staff_member_required(login_url="login")
 def addkolejka(request):
