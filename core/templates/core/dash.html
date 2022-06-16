@@ -17,7 +17,7 @@
                         </div>
                         <div class="flex-1 text-right md:text-center">
                             <h5 class="font-bold uppercase text-gray-400">Wszystkie wydarzenia</h5>
-                            <h3 class="font-bold text-3xl text-gray-600">{{posts}} <span class="text-green-500"><i
+                            <h3 class="font-bold text-3xl text-gray-600">{{count}} <span class="text-green-500"><i
                                         class="fas fa-caret-up"></i></span></h3>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                 </div>
                 <!--/Metric Card-->
             </div>
-            <h6 style="color:white;"><b>>>>>>>> Czas Teraźniejszy: {{ today }} <<<<<<<<< </b> </h6> <input id="search"
+            <h6 style="color:white;"><b>>>>>>>> Ostatnie Logowanie Admina: {{ users.0.last_login|date:'Y-m-d H:i:s' }} <<<<<<<<< </b> </h6> <input id="search"
                         class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
                         <table id="myTable" style="background-color: #111827;" class="table table-dark container">
                             <thead>
@@ -54,7 +54,7 @@
                             <th scope="col">PRZECIW</th> -->
                                     <th scope="col">WYNIK</th>
                                     <th scope="col">Dodaj/Edytuj</th>
-
+              
                                 </tr>
                             </thead>
                             <tbody>
@@ -81,6 +81,7 @@
                                             role="button">Usuń</a> {% endif %}
 
                                     </td>
+                          
                                 </tr>
                                 {% endfor %}
 

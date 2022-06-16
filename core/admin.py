@@ -1,15 +1,37 @@
 from django.contrib import admin
 from .models import Post, Vote, Profile, Kolejka
+from import_export import resources
+from import_export.admin import ExportActionMixin
+from import_export import resources
+from import_export.fields import Field
+from import_export.admin import ExportActionMixin
 
 admin.site.register(Profile)
 
-@admin.register(Kolejka)
-class KolejkaAdmin(admin.ModelAdmin):
-    '''Admin View for Kolejka'''
 
-    list_display = ('name', 'user', 'point')
-    list_filter = ('name', 'user')
+class KolejkaResource(resources.ModelResource):
+    user = Field()
 
+    class Meta:
+        model = Kolejka
+        fields = ('name', 'user', 'point')
+
+    def dehydrate_user(self, obj):
+        return obj.user.username
+
+
+class KolejkasAdmin(ExportActionMixin, admin.ModelAdmin):
+    resource_class = KolejkaResource
+
+
+admin.site.register(Kolejka, KolejkasAdmin)
+
+# @admin.register(Kolejka, KolejkasAdmin)
+# class KolejkaAdmin(admin.ModelAdmin):
+#     '''Admin View for Kolejka'''
+
+#     list_display = ('name', 'user', 'point')
+#     list_filter = ('name', 'user')
 
 
 @admin.register(Vote)

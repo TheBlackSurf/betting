@@ -1,77 +1,47 @@
-{% extends 'core/main.html' %}
-   
-   {% block content %}
-        <!--Container-->
-    <div class="container w-full mx-auto pt-20">
+{% extends 'core/main.html' %} {% block content %}
+<!--Container-->
+<div class="container w-full mx-auto pt-20">
+    <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+        <!--Console Content-->
 
-        <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+        <br />
+        <br />
+        <br />
+        <h2 style="color: rgba(158, 14, 14, 0.644)" class="text-white ml-3 items-center flex mb-10">
+            Wszystkie Wyniki zakończone
+        </h2>
+        <div class="container w-16 items-center"></div>
+        <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj..." />
+        <table id="myTable" style="background-color: #111827" class="table table-dark container">
+            <thead>
+                <tr>
+                    <th scope="col"><b>Nazwa Wydarzenia</b></th>
+                    <th scope="col"><b>Użytkownik</b></th>
+                    <th scope="col"><b>Wynik</b></th>
+                    <th scope="col"><b>Data Wydarzenia</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for vote in votes %}
+                {% if vote.post.created_on|date:'Y-m-d H:i:s' <= today|date:'Y-m-d H:i:s' %}
+                <tr>
+                    <th class="text-capitalize" scope="row">{{vote.post.body}}</th>
+                    <th class="text-capitalize" scope="row">{{vote.author}}</th>
+                    <th class="text-capitalize" style="color: green" scope="row">
+                        {{vote.name}}
+                    </th>
+                    <th class="text-capitalize" scope="row">{{vote.post.created_on}}</th>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        <!--Divider-->
+        <hr class="border-b-2 border-gray-600 my-8 mx-4" />
 
-            <!--Console Content-->
-
-            <br>
-            <br>
-            <br>
-            <h2 style="color: rgba(158, 14, 14, 0.644);" class="text-white ml-3 items-center flex mb-10">Wszystkie
-                Wyniki zakończone</h2>
-            <div class="container w-16 items-center">
-
-            </div>
-            <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
-            <table id="myTable" style="background-color: #111827;" class="table table-dark container">
-                <thead>
-                    <tr>
-                        <th scope="col"><b>Nazwa Wydarzenia</b></th>
-                        <th scope="col"><b>Użytkownik</b></th>
-                        <th scope="col"><b>Wynik</b></th>
-                        <th scope="col"><b>Data Wydarzenia</b></th>
-
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for vote in votes  %}
-
-                    {% if vote.post.created_on|date:'Y-m-d H:i:s' <= today|date:'Y-m-d H:i:s' %}
-                    <tr>
-                        <th class="text-capitalize" scope="row">
-                            {{vote.post.body}}
-                        </th>
-                        <th class="text-capitalize" scope="row">
-                            {{vote.author}}
-                        </th>
-                        <th class="text-capitalize" style="color: green;" scope="row">
-                            {{vote.name}}
-                        </th>
-                        <th class="text-capitalize" scope="row">
-                            {{vote.post.created_on}}
-                        </th>
-                    </tr>
-                    {% endif %}
-
-
-
-
-                    {% endfor %}
-
-
-
-
-                </tbody>
-            </table>
-            <!--Divider-->
-            <hr class="border-b-2 border-gray-600 my-8 mx-4">
-
-
-
-
-            <!--/ Console Content-->
-
-        </div>
-
-
+        <!--/ Console Content-->
     </div>
-    <!--/container-->
+</div>
+<!--/container-->
 
-
-
-   {% endblock content %}
-       
+{% endblock content %}
