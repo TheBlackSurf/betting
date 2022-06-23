@@ -6,7 +6,7 @@ from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm, RegulationForm
+from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm, RegulationForm, VoteColorForm
 from .models import Post, Profile, Kolejka, Regulation, Vote
 from .filters import PostFilter
 
@@ -130,7 +130,7 @@ def register_request(request):
 @login_required(login_url="login")
 def allvote(request):
     User = get_user_model()
-    votes = Vote.objects.all()
+    votes = Vote.objects.order_by("author")
     users = User.objects.all()
     context = {
         "users": users,
@@ -138,6 +138,21 @@ def allvote(request):
         "today": datetime.now(),
     }
     return render(request, "core/all-vote.html", context)
+
+
+@staff_member_required(login_url="login")
+def editVote(request, pk):
+    votes = Vote.objects.get(id=pk)
+    form = VoteColorForm(instance=votes)
+    if request.method == "POST":
+        form = VoteColorForm(request.POST, instance=votes)
+        if form.is_valid():
+            form.save()
+            return redirect('allvote')
+    return render(request, 'core/edit-vote.html', {
+        "votes": votes,
+        "form": form,
+    })
 
 
 @staff_member_required(login_url="login")
@@ -165,7 +180,7 @@ def userdetail(request, pk):
 
 @login_required(login_url="login")
 def updatevote(request, pk):
-    votes = Vote.objects.get(pk=pk)
+    votes = Vote.objects.get(id=pk)
     form = VoteForm(instance=votes)
     if request.method == "POST":
         form = VoteForm(request.POST, instance=votes)
@@ -249,7 +264,6 @@ def deletepost(request, *args, **kwargs):
         return redirect("/")
 
     return render(request, "core/deletepost.html")
-
 
 
 @login_required(login_url="login")

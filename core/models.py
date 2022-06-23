@@ -4,6 +4,13 @@ from django.forms import CharField, Textarea
 from django.utils import timezone
 from datetime import datetime
 
+COLOR = (
+    ("Zółty", "Zółty"),
+    ("Pomarańczowy", "Pomarańczowy"),
+    ("Czerwony", "Czerwony"),
+    ("Zielony", "Zielony"),
+)
+
 KOLEJKA_CHOICE = (
     ("Kolejka 1", "Kolejka 1"),
     ("Kolejka 2", "Kolejka 2"),
@@ -82,7 +89,7 @@ class Vote(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, null=True, blank=True)
-
+    color_vote = models.CharField(max_length=200, choices=COLOR, blank=True, null=True)
     def update(self, *args, **kwargs):
         kwargs.update({"updated": timezone.now})
         super().update(*args, **kwargs)

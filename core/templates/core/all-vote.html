@@ -8,7 +8,7 @@
         <br />
         <br />
         <h2 style="color: rgba(158, 14, 14, 0.644)" class="text-white ml-3 items-center flex mb-10">
-            Wszystkie Wyniki zakończone
+            Zakończone Wydarzenia
         </h2>
         <div class="container w-16 items-center"></div>
         <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj..." />
@@ -19,6 +19,12 @@
                     <th scope="col"><b>Użytkownik</b></th>
                     <th scope="col"><b>Wynik</b></th>
                     <th scope="col"><b>Data Wydarzenia</b></th>
+                    
+                    {% if user.is_superuser %}
+                    <th scope="col"><b>Edytuj</b></th>
+                        
+                    {% endif %}
+                        
                 </tr>
             </thead>
             <tbody>
@@ -27,10 +33,27 @@
                 <tr>
                     <th class="text-capitalize" scope="row">{{vote.post.body}}</th>
                     <th class="text-capitalize" scope="row">{{vote.author}}</th>
-                    <th class="text-capitalize" style="color: green" scope="row">
-                        {{vote.name}}
-                    </th>
+                    
+                    {% if vote.color_vote == "Zielony" %}
+                    <th class="text-capitalize" style="color: green" scope="row"> {{vote.name}} </th>
+                    {% elif vote.color_vote == "Czerwony" %}
+                    <th class="text-capitalize" style="color: red" scope="row"> {{vote.name}} </th>
+                    {% elif vote.color_vote == "Zółty" %}
+                    <th class="text-capitalize" style="color: yellow" scope="row"> {{vote.name}} </th>
+                    {% elif vote.color_vote == "Pomarańczowy" %}
+                    <th class="text-capitalize" style="color: orange" scope="row"> {{vote.name}} </th>
+                    {% else %}
+                    <th class="text-capitalize" style="color: white" scope="row"> {{vote.name}} </th>
+                    {% endif %}
+                        
+                    
                     <th class="text-capitalize" scope="row">{{vote.post.created_on}}</th>
+                    
+                    {% if user.is_superuser %}
+                    <th class="text-capitalize" scope="row"><a href="{% url 'edit-vote' vote.id %}"><button class='btn btn-primary'>Edytuj</button></a></th>
+                        
+                    {% endif %}
+                        
                 </tr>
                 {% endif %}
                 {% endfor %}

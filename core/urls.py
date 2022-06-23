@@ -20,4 +20,5 @@ urlpatterns = [
     path("regulamin/", views.regulation, name="regulation"),
     path("usun-regulamin/<int:pk>", views.deleteregulation, name="deleteregulation"),
     path("edytuj-regulamin/<int:pk>", views.editregulation, name="editregulation"),
+    path("edit-vote/<int:pk>", views.editVote, name="edit-vote"),
 ]

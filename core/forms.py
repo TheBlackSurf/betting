@@ -6,6 +6,11 @@ from django.forms.widgets import PasswordInput, TextInput
 from .models import *
 
 
+class VoteColorForm(forms.ModelForm):
+    class Meta:
+        model = Vote
+        fields = ('color_vote',)
+
 
 class RegulationForm(forms.ModelForm):
     point = forms.CharField(
@@ -27,7 +32,8 @@ class RegulationForm(forms.ModelForm):
 
 class RFPAuthForm(AuthenticationForm):
     username = forms.CharField(
-        widget=TextInput(attrs={"class": "form-control input-sm", "placeholder": "Nazwa Użytkownika"})
+        widget=TextInput(
+            attrs={"class": "form-control input-sm", "placeholder": "Nazwa Użytkownika"})
     )
     password = forms.CharField(
         widget=PasswordInput(attrs={
@@ -44,7 +50,8 @@ class VoteForm(forms.ModelForm):
     """Form definition for Vote."""
     name = forms.CharField(
         max_length=100,
-        widget=forms.TextInput(attrs={"class": "form-controls", "id": "some_id"}),
+        widget=forms.TextInput(
+            attrs={"class": "form-controls", "id": "some_id"}),
     )
 
     class Meta:
@@ -58,7 +65,8 @@ class VoteForm(forms.ModelForm):
 
     name = forms.CharField(
         max_length=100,
-        widget=forms.TextInput(attrs={"class": "form-controls", "id": "some_id"}),
+        widget=forms.TextInput(
+            attrs={"class": "form-controls", "id": "some_id"}),
     )
 
     class Meta:
