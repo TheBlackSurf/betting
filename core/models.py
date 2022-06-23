@@ -1,4 +1,3 @@
-
 from django.contrib.auth.models import User
 from django.db import models
 from django.forms import CharField, Textarea
@@ -54,11 +53,13 @@ class Post(models.Model):
     def __str__(self):
         return self.body
 
+    class Meta:
+        ordering = ('-created_on',)
+
 
 class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
-    
 
     def __str__(self):
         return self.user
@@ -92,22 +93,8 @@ class Vote(models.Model):
         return self.name
 
 
-# #? Settings Site Models
-# class Title(models.Model):
-#     title = models.CharField(max_length=200)
-#     sitelanguage = models.CharField(max_length=2)
-
-# class HeaderCode(models.Model):
-#     headercore =models.TextField()
-
-# class FooterCode(models.Model):
-#     footercode =models.TextField()
-
-
 class Regulation(models.Model):
-    
     point = models.CharField(max_length=2000)
-    
+
     def __str__(self):
         return self.point
-    

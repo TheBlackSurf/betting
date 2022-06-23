@@ -42,10 +42,16 @@
                 </div>
                 <!--/Metric Card-->
             </div>
-            <h6 style="color:white;"><b>>>>>>>> Ostatnie Logowanie Admina: {{ users.0.last_login|date:'Y-m-d H:i:s' }} <<<<<<<<< </b> </h6> <input id="search"
-                        class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
-                        <table id="myTable" style="background-color: #111827;" class="table table-dark container">
-                            <thead>
+            <h6 style="color:white;"><b>>>>>>>> Ostatnie Logowanie Admina: {{ users.0.last_login|date:'Y-m-d H:i:s' }} <<<<<<<<< </b> </h6> 
+
+            <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
+            <form class='m-2' action="" method='GET'>
+                {{myFilter.form.kolejka}}
+                <button class='text-white btn-dark' type="submit">Filtruj</button>
+            </form>
+            <table id="myTable" style="background-color: #111827;" class="table table-dark container">
+
+                <thead>
                                 <tr>
                                     <th scope="col">Kolejka</th>
                                     <th scope="col">Koniec Obstawiania</th>

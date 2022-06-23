@@ -1,20 +1,17 @@
-from multiprocessing import context
-import pkgutil
 from django.shortcuts import redirect, render
 from .models import ProfilePoint
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import ProfilePointForm
-# Create your views here.
 from django.contrib.auth.decorators import login_required
+
 
 @login_required(login_url="login")
 def viewpoint(request):
     points = ProfilePoint.objects.all()
-    
     context = {
-        'points':points,
+        'points': points,
     }
-    
+
     return render(request, 'points/points.html', context)
 
 
@@ -28,8 +25,9 @@ def addpoints(request):
             return redirect("viewpoint")
     return render(request, "points/add-kolejka.html", {"form": form})
 
+
 @staff_member_required(login_url="login")
-def editpoints(request,pk):
+def editpoints(request, pk):
     points = ProfilePoint.objects.get(id=pk)
     form = ProfilePointForm(instance=points)
     if request.method == "POST":

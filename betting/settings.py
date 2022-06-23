@@ -30,6 +30,12 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
+MY_OWN_APP = [
+    'core',
+    'info',
+    'points',
+]
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,14 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
-    'crispy_forms',
 
+    'crispy_forms',
     'import_export',
-    
-    'points',
-    'info'
-]
+    'django_filters',
+
+] + MY_OWN_APP
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

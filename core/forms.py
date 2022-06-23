@@ -5,6 +5,8 @@ from django.forms.widgets import PasswordInput, TextInput
 
 from .models import *
 
+
+
 class RegulationForm(forms.ModelForm):
     point = forms.CharField(
         required=True,
@@ -17,6 +19,7 @@ class RegulationForm(forms.ModelForm):
             }
         ),
     )
+
     class Meta:
         model = Regulation
         fields = ("point",)
@@ -27,14 +30,27 @@ class RFPAuthForm(AuthenticationForm):
         widget=TextInput(attrs={"class": "form-control input-sm", "placeholder": "Nazwa Użytkownika"})
     )
     password = forms.CharField(
-        widget=PasswordInput( attrs={
-                "type": "password",
-                "name": "password",
-                "class": "form-control input-sm",
-                "placeholder": "Hasło",
-                "id": "password",
-            })
+        widget=PasswordInput(attrs={
+            "type": "password",
+            "name": "password",
+            "class": "form-control input-sm",
+            "placeholder": "Hasło",
+            "id": "password",
+        })
     )
+
+
+class VoteForm(forms.ModelForm):
+    """Form definition for Vote."""
+    name = forms.CharField(
+        max_length=100,
+        widget=forms.TextInput(attrs={"class": "form-controls", "id": "some_id"}),
+    )
+
+    class Meta:
+        """Meta definition for Voteform."""
+        model = Vote
+        fields = ("name",)
 
 
 class VoteForm(forms.ModelForm):
@@ -50,7 +66,6 @@ class VoteForm(forms.ModelForm):
 
         model = Vote
         fields = ("name",)
-
 
 
 class NewUserForm(UserCreationForm):
@@ -136,6 +151,7 @@ class PostForm(forms.ModelForm):
             }
         ),
     )
+
     # created_on = forms.CharField(required=True,  widget= forms.TextInput(attrs={'type':'text', 'name':'email', 'class':'form-control input-sm', 'placeholder':'Data'}))
 
     class Meta:
@@ -143,13 +159,14 @@ class PostForm(forms.ModelForm):
 
         model = Post
         fields = ("body", "created_on", "kolejka")
+
     def clean_tank(self):
-            if not self['kolejka'].html_name in self.data:
-                return self.fields['kolejka'].initial
-            return self.cleaned_data['kolejka']
-        
+        if not self['kolejka'].html_name in self.data:
+            return self.fields['kolejka'].initial
+        return self.cleaned_data['kolejka']
+
+
 class KolejkaForm(forms.ModelForm):
-    
     class Meta:
         model = Kolejka
         fields = ('__all__')

@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm, RegulationForm
 from .models import Post, Profile, Kolejka, Regulation, Vote
+from .filters import PostFilter
+
 
 @login_required(login_url="login")
 def regulation(request):
@@ -20,7 +22,7 @@ def regulation(request):
             return redirect('regulation')
     context = {
         'regulations': regulations,
-        'form':form
+        'form': form
     }
     return render(request, 'core/regulamin.html', context)
 
@@ -36,20 +38,22 @@ def editregulation(request, pk):
             return redirect('regulation')
     context = {
         'regulations': regulations,
-        'form':form
+        'form': form
     }
     return render(request, 'core/edit-regulamin.html', context)
+
 
 @staff_member_required(login_url="login")
 def deleteregulation(request, pk):
     regulations = Regulation.objects.get(id=pk)
     if request.method == 'POST':
-            regulations.delete()
-            return redirect('regulation')
+        regulations.delete()
+        return redirect('regulation')
     context = {
         'regulations': regulations,
     }
     return render(request, 'core/delete-regulamin.html', context)
+
 
 @staff_member_required(login_url="login")
 def addkolejka(request):
@@ -211,12 +215,14 @@ def postdetail(request):
     post = Post.objects.all()
     User = get_user_model()
     users = User.objects.all()
-
+    myFilter = PostFilter(request.GET, queryset=post)
+    post = myFilter.qs
     context = {
         "post": post,
         "today": datetime.now(),
         "users": users,
         "count": Post.objects.count(),
+        "myFilter": myFilter,
     }
     return render(request, "core/dash.html", context)
 
@@ -245,6 +251,7 @@ def deletepost(request, *args, **kwargs):
     return render(request, "core/deletepost.html")
 
 
+
 @login_required(login_url="login")
 def deletevote(request, *args, **kwargs):
     pk = kwargs.get("pk")
@@ -255,15 +262,3 @@ def deletevote(request, *args, **kwargs):
         return redirect("/")
 
     return render(request, "core/deletevote.html")
-
-
-# def settingsite(request):
-#     title = Title.objects.all()
-#     headers = HeaderCode.objects.all()
-#     footer = FooterCode.objects.all()
-#     context = {
-#         'title':title,
-#         'headers':headers,
-#         'footer':footer,
-#     }
-#     return render(request, 'core/main.html', context)
