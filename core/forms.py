@@ -1,15 +1,33 @@
+from dataclasses import field
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from django.forms.widgets import PasswordInput, TextInput
-
 from .models import *
+
+
+class AnkietaForm(forms.ModelForm):
+    class Meta:
+        model = Ankieta
+        fields = ('__all__')
+
+
+class ResultForm(forms.ModelForm):
+    class Meta:
+        model = Result
+        fields = ('choice',)
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ("name", "surnname", "pic")
 
 
 class VoteColorForm(forms.ModelForm):
     class Meta:
         model = Vote
-        fields = ('color_vote',)
+        fields = ("color_vote",)
 
 
 class RegulationForm(forms.ModelForm):
@@ -33,21 +51,26 @@ class RegulationForm(forms.ModelForm):
 class RFPAuthForm(AuthenticationForm):
     username = forms.CharField(
         widget=TextInput(
-            attrs={"class": "form-control input-sm", "placeholder": "Nazwa Użytkownika"})
+            attrs={"class": "form-control input-sm",
+                   "placeholder": "Nazwa Użytkownika"}
+        )
     )
     password = forms.CharField(
-        widget=PasswordInput(attrs={
-            "type": "password",
-            "name": "password",
-            "class": "form-control input-sm",
-            "placeholder": "Hasło",
-            "id": "password",
-        })
+        widget=PasswordInput(
+            attrs={
+                "type": "password",
+                "name": "password",
+                "class": "form-control input-sm",
+                "placeholder": "Hasło",
+                "id": "password",
+            }
+        )
     )
 
 
 class VoteForm(forms.ModelForm):
     """Form definition for Vote."""
+
     name = forms.CharField(
         max_length=100,
         widget=forms.TextInput(
@@ -56,6 +79,7 @@ class VoteForm(forms.ModelForm):
 
     class Meta:
         """Meta definition for Voteform."""
+
         model = Vote
         fields = ("name",)
 
@@ -111,6 +135,7 @@ class NewUserForm(UserCreationForm):
             }
         ),
     )
+
     password2 = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -169,12 +194,12 @@ class PostForm(forms.ModelForm):
         fields = ("body", "created_on", "kolejka")
 
     def clean_tank(self):
-        if not self['kolejka'].html_name in self.data:
-            return self.fields['kolejka'].initial
-        return self.cleaned_data['kolejka']
+        if not self["kolejka"].html_name in self.data:
+            return self.fields["kolejka"].initial
+        return self.cleaned_data["kolejka"]
 
 
 class KolejkaForm(forms.ModelForm):
     class Meta:
         model = Kolejka
-        fields = ('__all__')
+        fields = "__all__"

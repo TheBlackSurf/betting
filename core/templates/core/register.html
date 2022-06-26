@@ -26,6 +26,15 @@
 			 			<div class="panel-body ">
 			    		<form role="form" method="POST">
                             {% csrf_token %}
+							{% if messages %}
+						<ul class="messages text-white">
+							{% for message in messages %}
+							<li class='text-white' {% if message.tags %} class="{{ message.tags }}"{% endif %}>
+								<p style='color:white;'>{{ message }}</p>
+							</li>
+							{% endfor %}
+						</ul>
+						{% endif %}
 			    			<div class="form-group ">
                                 {{register_form.username}}
 			    			</div>

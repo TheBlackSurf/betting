@@ -5,9 +5,12 @@ from import_export.admin import ExportActionMixin
 from import_export import resources
 from import_export.fields import Field
 from import_export.admin import ExportActionMixin
+from .models import Ankieta, Result
 
 admin.site.register(Profile)
 admin.site.register(Regulation)
+admin.site.register(Result)
+admin.site.register(Ankieta)
 
 
 class KolejkaResource(resources.ModelResource):
@@ -26,6 +29,7 @@ class KolejkasAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 admin.site.register(Kolejka, KolejkasAdmin)
+
 
 # @admin.register(Kolejka, KolejkasAdmin)
 # class KolejkaAdmin(admin.ModelAdmin):

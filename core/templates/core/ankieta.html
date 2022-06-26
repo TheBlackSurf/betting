@@ -1,0 +1,58 @@
+{% extends 'core/main.html' %}
+
+{% block content %}
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+
+    <div class="">
+        {% if user.is_superuser %}
+            <form class="m-4" action="" method="post">
+                {% csrf_token %}
+                {{ form.title }}
+                <button class="btn btn-outline-primary" type="submit">Dodaj Ankietę</button>
+            </form>
+        {% endif %}
+        <table class="table table-dark table-borderless ">
+
+            <tbody>
+
+            {% for a in ankiety %}
+                <td style="background-color: #111840;"><b>{{ a.title }}</b></td>
+                <td style="background-color: #111840;"></td>
+                <td style="background-color: #111840;">
+                    <a href="{% url 'edit-ankieta' a.id %}">
+                        <button class="btn btn-outline-primary">Dodaj Głos</button>
+                    </a>
+                </td>
+                {% for foo in a.result_set.all %}
+
+                    <tr>
+                        <td>{{ foo.user }}</td>
+                        {% if foo.choice == 'za' %}
+                            <td style="background-color: green;">{{ foo.choice }}</td>
+                        {% elif foo.choice == 'przeciw' %}
+                            <td style="background-color: red;">{{ foo.choice }}</td>
+                        {% endif %}
+                        {% if foo.user == request.user %}
+                            <td><a href="{% url 'delete-result' foo.id %}">Usuń</a></td>
+
+                        {% endif %}
+                    </tr>
+                    {% empty %}
+
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

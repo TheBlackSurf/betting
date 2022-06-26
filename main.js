@@ -7,6 +7,7 @@ var navMenu = document.getElementById("nav-toggle");
 document.onclick = check;
 
 
+
 function check(e) {
     var target = (e && e.target) || (event && event.srcElement);
 

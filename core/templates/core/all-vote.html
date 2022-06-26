@@ -1,69 +1,105 @@
 {% extends 'core/main.html' %} {% block content %}
 <!--Container-->
 <div class="container w-full mx-auto pt-20">
-    <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        <!--Console Content-->
+  <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
+    <!--Console Content-->
 
-        <br />
-        <br />
-        <br />
-        <h2 style="color: rgba(158, 14, 14, 0.644)" class="text-white ml-3 items-center flex mb-10">
-            Zakończone Wydarzenia
-        </h2>
-        <div class="container w-16 items-center"></div>
-        <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj..." />
-        <table id="myTable" style="background-color: #111827" class="table table-dark container">
-            <thead>
-                <tr>
-                    <th scope="col"><b>Nazwa Wydarzenia</b></th>
-                    <th scope="col"><b>Użytkownik</b></th>
-                    <th scope="col"><b>Wynik</b></th>
-                    <th scope="col"><b>Data Wydarzenia</b></th>
-                    
-                    {% if user.is_superuser %}
-                    <th scope="col"><b>Edytuj</b></th>
-                        
-                    {% endif %}
-                        
-                </tr>
-            </thead>
-            <tbody>
-                {% for vote in votes %}
-                {% if vote.post.created_on|date:'Y-m-d H:i:s' <= today|date:'Y-m-d H:i:s' %}
-                <tr>
-                    <th class="text-capitalize" scope="row">{{vote.post.body}}</th>
-                    <th class="text-capitalize" scope="row">{{vote.author}}</th>
-                    
-                    {% if vote.color_vote == "Zielony" %}
-                    <th class="text-capitalize" style="color: green" scope="row"> {{vote.name}} </th>
-                    {% elif vote.color_vote == "Czerwony" %}
-                    <th class="text-capitalize" style="color: red" scope="row"> {{vote.name}} </th>
-                    {% elif vote.color_vote == "Zółty" %}
-                    <th class="text-capitalize" style="color: yellow" scope="row"> {{vote.name}} </th>
-                    {% elif vote.color_vote == "Pomarańczowy" %}
-                    <th class="text-capitalize" style="color: orange" scope="row"> {{vote.name}} </th>
-                    {% else %}
-                    <th class="text-capitalize" style="color: white" scope="row"> {{vote.name}} </th>
-                    {% endif %}
-                        
-                    
-                    <th class="text-capitalize" scope="row">{{vote.post.created_on}}</th>
-                    
-                    {% if user.is_superuser %}
-                    <th class="text-capitalize" scope="row"><a href="{% url 'edit-vote' vote.id %}"><button class='btn btn-primary'>Edytuj</button></a></th>
-                        
-                    {% endif %}
-                        
-                </tr>
-                {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
-        <!--Divider-->
-        <hr class="border-b-2 border-gray-600 my-8 mx-4" />
+    <br />
+    <br />
+    <br />
+    <h2 style="color: rgba(158, 14, 14, 0.644)" class="text-white ml-3 items-center flex mb-10">
+      Zakończone Wydarzenia
+    </h2>
 
-        <!--/ Console Content-->
-    </div>
+    {% if user.is_superuser %}
+    <form action="" method='POST'>
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="text-white" for="exampleFormControlSelect1">Kolejka</label>
+        <select name="kolejka" class="form-control" id="exampleFormControlSelect1">
+          {% for p in posts  %}
+          <option>{{p.body}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="text-white" for="exampleFormControlSelect1">Kolejka</label>
+        <select name="kolor" class="form-control" id="exampleFormControlSelect1">
+          <option>Zółty</option>
+          <option>Czerwony</option>
+          <option>Pomarańczowy</option>
+          <option>Zielony</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="text-white" for="exampleInputEmail1">Wynik</label>
+        <input name="wynik" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+          placeholder="Wpisz Wynik">
+        <small id="emailHelp" class="form-text text-muted">Podaj dokładny wynik!</small>
+      </div>
+      <input class="btn btn-primary" type="submit" value="Update">
+    </form>
+    {% endif %}
+
+    <div class="container w-16 items-center"></div>
+    <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj..." />
+    <table id="myTable" style="background-color: #111827" class="table table-dark container">
+      <thead>
+        <tr>
+          <th scope="col"><b>Kolejka</b></th>
+          <th scope="col"><b>Nazwa Wydarzenia</b></th>
+          <th scope="col"><b>Użytkownik</b></th>
+          <th scope="col"><b>Wynik</b></th>
+          <th scope="col"><b>Data Wydarzenia</b></th>
+
+          {% if user.is_superuser %}
+          <th scope="col"><b>Edytuj</b></th>
+
+          {% endif %}
+
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for vote in votes %}
+        {% if vote.post.created_on|date:'Y-m-d H:i:s' <= today|date:'Y-m-d H:i:s' %}
+        <tr>
+          <th class="text-capitalize" scope="row">{{vote.post.kolejka}}</th>
+          <th class="text-capitalize" scope="row">{{vote.post.body}}</th>
+          <th class="text-capitalize" scope="row">{{vote.author}}</th>
+
+          {% if vote.color_vote == "Zielony" %}
+          <th class="text-capitalize" style="color: green" scope="row"> {{vote.name}} </th>
+          {% elif vote.color_vote == "Czerwony" %}
+          <th class="text-capitalize" style="color: red" scope="row"> {{vote.name}} </th>
+          {% elif vote.color_vote == "Zółty" %}
+          <th class="text-capitalize" style="color: yellow" scope="row"> {{vote.name}} </th>
+          {% elif vote.color_vote == "Pomarańczowy" %}
+          <th class="text-capitalize" style="color: orange" scope="row"> {{vote.name}} </th>
+          {% else %}
+          <th class="text-capitalize" style="color: white" scope="row"> {{vote.name}} </th>
+          {% endif %}
+
+
+          <th class="text-capitalize" scope="row">{{vote.post.created_on}}</th>
+
+          {% if user.is_superuser %}
+          <th class="text-capitalize" scope="row"><a href="{% url 'edit-votes' vote.id %}"><button
+                class='btn btn-primary'>Edytuj</button></a></th>
+
+          {% endif %}
+
+        </tr>
+        {% endif %}
+        {% endfor %}
+      </tbody>
+
+    </table>
+    <!--Divider-->
+    <hr class="border-b-2 border-gray-600 my-8 mx-4" />
+
+    <!--/ Console Content-->
+  </div>
 </div>
 <!--/container-->
 

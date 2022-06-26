@@ -46,13 +46,30 @@ KOLEJKA_CHOICE = (
     ("Kolejka 32", "Kolejka 32"),
     ("Kolejka 33", "Kolejka 33"),
     ("Kolejka 34", "Kolejka 34"),
-
 )
+RESULT = (
+    ("za", "za"),
+    ("przeciw", 'przeciw'),
+)
+
+
+class Ankieta(models.Model):
+    title = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.title
+
+
+class Result(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ankieta = models.ForeignKey(Ankieta, on_delete=models.CASCADE)
+    choice = models.CharField(max_length=200, choices=RESULT)
 
 
 class Post(models.Model):
     kolejka = models.CharField(
-        max_length=200, choices=KOLEJKA_CHOICE, blank=True, null=True)
+        max_length=200, choices=KOLEJKA_CHOICE, blank=True, null=True
+    )
     body = models.TextField()
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -61,15 +78,23 @@ class Post(models.Model):
         return self.body
 
     class Meta:
-        ordering = ('-created_on',)
+        ordering = ("-created_on",)
 
 
 class Profile(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, null=True, blank=True)
+    pic = models.ImageField(
+        upload_to="profile-pic",
+        null=True,
+        blank=True,
+        default="profile-pic/profile.png",
+    )
+    name = models.CharField(max_length=128, null=True, blank=True)
+    surnname = models.CharField(max_length=128, null=True, blank=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 
 class Kolejka(models.Model):
@@ -79,7 +104,7 @@ class Kolejka(models.Model):
     point = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return f' {self.user.username} zdobył {self.point} punktów  w {self.name}  '
+        return f" {self.user.username} zdobył {self.point} punktów  w {self.name}"
 
 
 class Vote(models.Model):
@@ -89,7 +114,11 @@ class Vote(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, null=True, blank=True)
-    color_vote = models.CharField(max_length=200, choices=COLOR, blank=True, null=True)
+    color_vote = models.CharField(
+        max_length=200, choices=COLOR, blank=True, null=True)
+
+    
+    
     def update(self, *args, **kwargs):
         kwargs.update({"updated": timezone.now})
         super().update(*args, **kwargs)

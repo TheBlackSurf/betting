@@ -63,17 +63,49 @@
             <table id="myTable" style="background-color: #111827;" class="table table-dark container">
                 <thead>
                     <tr>
-                        <th scope="col"><b>Użytkownicy</b></th>
+                        <th  scope="col"><b>Zdjęcie</b></th>
+                        <th scope="col"><b>Użytkownik</b></th>
+                        <th scope="col"><b>Imię</b></th>
+                        <th scope="col"><b>Nazwisko</b></th>
 
                     </tr>
+                    
                 </thead>
                 <tbody>
 
                     {% for user in users  %}
                     <tr>
-                        <td class="text-capitalize" scope="row"><a href="{% url 'userdetail' user.id %}">
+                        <td width=30 class="text-capitalize" scope="row"><a href="{% url 'userdetail' user.id %}">
+                            <img  
+                            class="w-20 h-14 rounded-full mr-4"
+                           {% for s in profile_user  %}
+                              {% if s.user == user %}
+                                  src="/media/{{s.pic}}"
+                              {% endif %}
+                            {% endfor %}
+                                
+                                
+                                alt="Avatar of User"
+                                />
+                            </a></td>
+                            <td class="text-capitalize" scope="row"><a href="{% url 'userdetail' user.id %}">
                                 <p>{{user.username}}</p>
                             </a></td>
+                            <td>
+                                {% for s in profile_user  %}
+                                {% if s.user == user %}
+                                   <p>{{s.name}}</p>
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            <td>
+                                {% for s in profile_user  %}
+                                {% if s.user == user %}
+                                   <p>{{s.surnname}}</p>
+                                {% endif %}
+                              {% endfor %}
+                            </td>
+                            
                     </tr>
                     {% endfor %}
 
@@ -160,7 +192,7 @@
         $(document).ready(function () {
             $("#search").on("keyup", function () {
                 var value = $(this).val().toLowerCase();
-                $("#myTable tr").filter(function () {
+                $("#myTable tbody tr").filter(function () {
                     $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
                 });
             });

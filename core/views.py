@@ -1,58 +1,138 @@
 from datetime import datetime
 from multiprocessing import context
-from django.utils import timezone
+
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, get_user_model, login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import NewUserForm, PostForm, RFPAuthForm, VoteForm, KolejkaForm, RegulationForm, VoteColorForm
-from .models import Post, Profile, Kolejka, Regulation, Vote
+from django.utils import timezone
+
 from .filters import PostFilter
+from .forms import (
+    KolejkaForm,
+    NewUserForm,
+    PostForm,
+    ProfileForm,
+    RegulationForm,
+    RFPAuthForm,
+    VoteColorForm,
+    VoteForm,
+    ResultForm,
+    AnkietaForm,
+)
+from .models import Kolejka, Post, Profile, Regulation, Vote, Ankieta, Result
 
 
-@login_required(login_url="login")
-def regulation(request):
-    regulations = Regulation.objects.all()
-    form = RegulationForm()
+def deleteResult(request, pk):
+    result = Result.objects.get(id=pk)
     if request.method == 'POST':
-        form = RegulationForm(request.POST)
+        if result.user == request.user:
+            print(result.ankieta.title)
+            result.delete()
+            return redirect('ankieta')
+        else:
+            return redirect('ankieta')
+
+    return render(request, 'core/delete-result.html', {
+        'result': result,
+    })
+
+
+def editAnkieta(request, pk):
+    form = ResultForm()
+    ankieta = Ankieta.objects.get(id=pk)
+    if request.method == 'POST':
+        form = ResultForm(request.POST)
+        if form.is_valid():
+            form.instance.user = request.user
+            form.instance.ankieta = ankieta
+            form.save()
+            return redirect('ankieta')
+    return render(request, 'core/edit-ankieta.html', {
+        'ankieta': ankieta,
+        'form': form,
+    })
+
+
+def showAnkieta(request):
+    ankiety = Ankieta.objects.all()
+    results = Result.objects.all()
+    form = AnkietaForm()
+    if request.method == 'POST':
+        form = AnkietaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('regulation')
-    context = {
-        'regulations': regulations,
-        'form': form
-    }
-    return render(request, 'core/regulamin.html', context)
+            return redirect('ankieta')
+    return render(request, 'core/ankieta.html', {
+        'ankiety': ankiety,
+        'results': results,
+        'form': form,
+    })
 
 
 @staff_member_required(login_url="login")
 def editregulation(request, pk):
     regulations = Regulation.objects.get(id=pk)
     form = RegulationForm(instance=regulations)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = RegulationForm(request.POST, instance=regulations)
         if form.is_valid():
             form.save()
-            return redirect('regulation')
-    context = {
-        'regulations': regulations,
-        'form': form
+            return redirect("regulation")
+    context = {"regulations": regulations, "form": form}
+    return render(request, "core/edit-regulamin.html", context)
+
+
+@login_required(login_url="login")
+def setting_profile(request, pk):
+    profile = Profile.objects.get(id=pk)
+    form = ProfileForm(instance=profile)
+    if request.method == "POST":
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect("dash")
+    return render(
+        request,
+        "core/edit-profile.html",
+        {
+            "profile": profile,
+            "form": form,
+        },
+    )
+
+
+def profile_settings(request):
+    return {
+        # 'profile_user': Profile.objects.filter(user=request.user)
+        "profile_user": Profile.objects.all()
     }
-    return render(request, 'core/edit-regulamin.html', context)
+
+
+@login_required(login_url="login")
+def regulation(request):
+    regulations = Regulation.objects.all()
+    form = RegulationForm()
+    if request.method == "POST":
+        form = RegulationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("regulation")
+    context = {"regulations": regulations, "form": form}
+    return render(request, "core/regulamin.html", context)
 
 
 @staff_member_required(login_url="login")
 def deleteregulation(request, pk):
     regulations = Regulation.objects.get(id=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         regulations.delete()
-        return redirect('regulation')
+        return redirect("regulation")
     context = {
-        'regulations': regulations,
+        "regulations": regulations,
     }
-    return render(request, 'core/delete-regulamin.html', context)
+    return render(request, "core/delete-regulamin.html", context)
 
 
 @staff_member_required(login_url="login")
@@ -73,10 +153,10 @@ def kolejka(request):
     kolejki = Kolejka.objects.all()
 
     context = {
-        'kolejki': kolejki,
-        'users': users,
+        "kolejki": kolejki,
+        "users": users,
     }
-    return render(request, 'core/kolejka.html', context)
+    return render(request, "core/kolejka.html", context)
 
 
 def logout_request(request):
@@ -112,13 +192,19 @@ def register_request(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            messages.success(request, "Registration successful.")
-            Profile.objects.create(
-                user=user
-            )
+            messages.success(request, "Pomyślnie")
+            Profile.objects.create(user=user)
+            if not user:
+                raise form.ValidationError("User does not exist.")
+            if not user.is_active:
+                raise form.ValidationError("User is no longer active.")
             return redirect("login")
         messages.error(
-            request, "Unsuccessful registration. Invalid information.")
+            request,
+            """
+            Błędy w Formularzu!
+            """,
+        )
     form = NewUserForm()
     return render(
         request=request,
@@ -131,10 +217,23 @@ def register_request(request):
 def allvote(request):
     User = get_user_model()
     votes = Vote.objects.order_by("author")
+    posts = Post.objects.all()
+    if request.method == "POST":
+        kolejka = request.POST.get("kolejka")
+        kolor = request.POST.get("kolor")
+        wynik = request.POST.get("wynik")
+
+        votes = Vote.objects.order_by("author")
+        votes_filter = votes.filter(post__body=kolejka)
+        votes_filter.filter(name=wynik).update(color_vote=kolor)
+        print(votes_filter)
+        return redirect("allvote")
+
     users = User.objects.all()
     context = {
         "users": users,
         "votes": votes,
+        "posts": posts,
         "today": datetime.now(),
     }
     return render(request, "core/all-vote.html", context)
@@ -148,11 +247,15 @@ def editVote(request, pk):
         form = VoteColorForm(request.POST, instance=votes)
         if form.is_valid():
             form.save()
-            return redirect('allvote')
-    return render(request, 'core/edit-vote.html', {
-        "votes": votes,
-        "form": form,
-    })
+            return redirect("allvote")
+    return render(
+        request,
+        "core/edit-vote.html",
+        {
+            "votes": votes,
+            "form": form,
+        },
+    )
 
 
 @staff_member_required(login_url="login")
@@ -167,7 +270,6 @@ def alluser(request):
 
 @staff_member_required(login_url="login")
 def userdetail(request, pk):
-
     User = get_user_model()
     votes = Vote.objects.all()
     users = User.objects.get(id=pk)
@@ -208,7 +310,7 @@ def addvote(request, pk):
             form.instance.author = request.user
             form.instance.post = post
             if form.instance.post.created_on.strftime(
-                "%d.%m.%Y %H:%M"
+                    "%d.%m.%Y %H:%M"
             ) >= timezone.now().strftime("%d.%m.%Y %H:%M"):
                 form.save()
             else:
