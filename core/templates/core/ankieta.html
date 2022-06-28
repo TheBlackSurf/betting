@@ -1,15 +1,8 @@
 {% extends 'core/main.html' %}
 
 {% block content %}
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
-    <br>
 
-    <div class="">
+    <div >
         {% if user.is_superuser %}
             <form class="m-4" action="" method="post">
                 {% csrf_token %}

@@ -1,37 +1,29 @@
 {% extends 'core/main.html' %} {% block content %}
 
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 
 {% if user.is_superuser %}
 <form action="" method="POST">
     {% csrf_token %}
     <div class="mb-6 container">
         {{form.body}}
-        <button type="submit" class=" mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj</button>
+        <button type="submit"
+            class=" mt-4 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Dodaj</button>
 
     </div>
-</form>    
+</form>
 {% endif %}
-    
 
 <div style="background-color: #111827;" class="text-white container rounded-2xl">
     <h3 class="pt-4">Tablica Ogłoszeń</h3>
-    <div  style="background-color: #111827;" class="bg-gray-600 text-white container rounded-4xl p-4">
+    <div style="background-color: #111827;" class="bg-gray-600 text-white container rounded-4xl p-4">
         {% for i in infos  %}
         <div class="bg-gray-800 p-4 rounded-2xl mt-2">
             <p>{{ i.created|date:'Y-m-d H:i:s' }}</p>
-            <h3>  {{ i.body }}</h3>
-            
-            {% if user.is_superuser %}         
-                <a href="{% url 'editinfo' i.id %}">Edytuj</a>
-                <a href="{% url 'deleteinfo' i.id %}">Usuń</a>                
+            <h3> {{ i.body }}</h3>
+
+            {% if user.is_superuser %}
+            <a href="{% url 'editinfo' i.id %}">Edytuj</a>
+            <a href="{% url 'deleteinfo' i.id %}">Usuń</a>
             {% endif %}
 
         </div>
@@ -39,4 +31,3 @@
     </div>
 </div>
 {% endblock content %}
-

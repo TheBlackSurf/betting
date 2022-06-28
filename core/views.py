@@ -24,51 +24,67 @@ from .forms import (
 from .models import Kolejka, Post, Profile, Regulation, Vote, Ankieta, Result
 
 
+def tpay(request):
+    return render(request, "core/tpay.html")
+
+
 def deleteResult(request, pk):
     result = Result.objects.get(id=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         if result.user == request.user:
             print(result.ankieta.title)
             result.delete()
-            return redirect('ankieta')
+            return redirect("ankieta")
         else:
-            return redirect('ankieta')
+            return redirect("ankieta")
 
-    return render(request, 'core/delete-result.html', {
-        'result': result,
-    })
+    return render(
+        request,
+        "core/delete-result.html",
+        {
+            "result": result,
+        },
+    )
 
 
 def editAnkieta(request, pk):
     form = ResultForm()
     ankieta = Ankieta.objects.get(id=pk)
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ResultForm(request.POST)
         if form.is_valid():
             form.instance.user = request.user
             form.instance.ankieta = ankieta
             form.save()
-            return redirect('ankieta')
-    return render(request, 'core/edit-ankieta.html', {
-        'ankieta': ankieta,
-        'form': form,
-    })
+            return redirect("ankieta")
+    return render(
+        request,
+        "core/edit-ankieta.html",
+        {
+            "ankieta": ankieta,
+            "form": form,
+        },
+    )
 
 
 def showAnkieta(request):
     ankiety = Ankieta.objects.all()
     results = Result.objects.all()
     form = AnkietaForm()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = AnkietaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('ankieta')
-    return render(request, 'core/ankieta.html', {
-        'ankiety': ankiety,
-        'results': results,
-        'form': form,
-    })
+            return redirect("ankieta")
+    return render(
+        request,
+        "core/ankieta.html",
+        {
+            "ankiety": ankiety,
+            "results": results,
+            "form": form,
+        },
+    )
 
 
 @staff_member_required(login_url="login")
@@ -218,6 +234,8 @@ def allvote(request):
     User = get_user_model()
     votes = Vote.objects.order_by("author")
     posts = Post.objects.all()
+    users = User.objects.all()
+
     if request.method == "POST":
         kolejka = request.POST.get("kolejka")
         kolor = request.POST.get("kolor")
@@ -229,7 +247,6 @@ def allvote(request):
         print(votes_filter)
         return redirect("allvote")
 
-    users = User.objects.all()
     context = {
         "users": users,
         "votes": votes,
@@ -291,6 +308,7 @@ def updatevote(request, pk):
             return redirect("dash")
     context = {
         "form": form,
+        "votes": votes,
     }
     return render(request, "core/update.html", context)
 
@@ -310,7 +328,7 @@ def addvote(request, pk):
             form.instance.author = request.user
             form.instance.post = post
             if form.instance.post.created_on.strftime(
-                    "%d.%m.%Y %H:%M"
+                "%d.%m.%Y %H:%M"
             ) >= timezone.now().strftime("%d.%m.%Y %H:%M"):
                 form.save()
             else:
@@ -329,7 +347,7 @@ def addvote(request, pk):
 
 @login_required(login_url="login")
 def postdetail(request):
-    post = Post.objects.all()
+    post = Post.objects.order_by("-created_on")
     User = get_user_model()
     users = User.objects.all()
     myFilter = PostFilter(request.GET, queryset=post)
@@ -377,4 +395,10 @@ def deletevote(request, *args, **kwargs):
         vote.delete()
         return redirect("/")
 
-    return render(request, "core/deletevote.html")
+    return render(
+        request,
+        "core/deletevote.html",
+        {
+            "vote": vote,
+        },
+    )

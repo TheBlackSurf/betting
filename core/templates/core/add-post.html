@@ -2,7 +2,6 @@
 
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
-<!------ Include the above in your HEAD tag ---------->
 <style>
     body {
         background-color: #191919;
@@ -27,7 +26,7 @@
                         Wydarzenie!
                         <small></small></h3>
                 </div>
-                
+
                 <div class=" panel-body ">
                     <form role=" form " method="POST">
                         {% csrf_token %}
@@ -41,7 +40,7 @@
                         <div class=" form-group ">
                             {{form.created_on}}
                         </div>
-                        
+
                         <input type="submit" value="Dodaj Wydarzenie" class="btn btn-info btn-block">
 
                     </form>
@@ -50,4 +49,3 @@
         </div>
     </div>
 </div>
-

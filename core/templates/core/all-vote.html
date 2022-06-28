@@ -1,12 +1,7 @@
 {% extends 'core/main.html' %} {% block content %}
-<!--Container-->
-<div class="container w-full mx-auto pt-20">
-  <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-    <!--Console Content-->
 
-    <br />
-    <br />
-    <br />
+<div class="container w-full mx-auto">
+  <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
     <h2 style="color: rgba(158, 14, 14, 0.644)" class="text-white ml-3 items-center flex mb-10">
       Zakończone Wydarzenia
     </h2>
@@ -79,7 +74,6 @@
           {% else %}
           <th class="text-capitalize" style="color: white" scope="row"> {{vote.name}} </th>
           {% endif %}
-
 
           <th class="text-capitalize" scope="row">{{vote.post.created_on}}</th>
 

@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from core.views import showAnkieta, editAnkieta, deleteResult
 
+# URL Patterns for Core!
 urlpatterns = [
     path('ankieta/<int:pk>', editAnkieta, name='edit-ankieta'),
     path('delete-result/<int:pk>', deleteResult, name='delete-result'),
@@ -21,7 +22,8 @@ urlpatterns = [
     path("logout", views.logout_request, name="logout"),
     path("kolejka/", views.kolejka, name="kolejka"),
     path("regulamin/", views.regulation, name="regulation"),
-    path("usun-regulamin/<int:pk>", views.deleteregulation, name="deleteregulation"),
+    path("usun-regulamin/<int:pk>",
+         views.deleteregulation, name="deleteregulation"),
     path("edytuj-regulamin/<int:pk>", views.editregulation, name="editregulation"),
     path("edit-vote/<int:pk>", views.editVote, name="edit-votes"),
     path("edit-profile/<int:pk>", views.setting_profile, name='settings-profile'),

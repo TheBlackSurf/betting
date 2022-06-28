@@ -1,34 +1,25 @@
 {% extends 'core/main.html' %} {% block content %}
 
-<br /><br />
-<br /><br />
-<br /><br />
-<br /><br />
-
 <section class="container">
   <strong class="text-white">
-    Wszyskie Punkty: <span id="Tprice"></span
-  ></strong>
-  <input
-    type="text"
-    class="form-control form-control-lg table-filter"
-    data-table="order-table"
-    placeholder="Wyszukaj..."
-  />
+    Wszyskie Punkty: <span id="Tprice"></span></strong>
+  <input type="text" class="form-control form-control-lg table-filter" data-table="order-table"
+    placeholder="Wyszukaj..." />
 
   <br />
-  <table id="VendasHistoryTable" class="order-table table dark3Dtable table-striped table-responsive table-hover result-point">
+  <table id="VendasHistoryTable"
+    class="order-table table dark3Dtable table-striped table-responsive table-hover result-point">
     <thead>
       <tr class="text-white">
-        
-      
-          
-          {% if user.is_superuser %}
-            
-          
-          <th >Edytuj</th>
-          {% endif %}
-        <th >Użytkownik</th>
+
+
+
+        {% if user.is_superuser %}
+
+
+        <th>Edytuj</th>
+        {% endif %}
+        <th>Użytkownik</th>
         <th>P</th>
         <th>1</th>
         <th>2</th>
@@ -74,11 +65,11 @@
 
     {% for k in points %}
 
-        
+
     <tr class="text-white">
       {% if user.is_superuser %}
       <th><a href="{% url 'editpoints' k.id  %}">Edytuj</a></th>
-    {% endif %}
+      {% endif %}
       <td>{{k.user}}</td>
       <td>{{k.gross}}</td>
       <td>{{k.kolejka1}}</td>

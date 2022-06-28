@@ -1,0 +1,147 @@
+
+<script src="//cdn.rawgit.com/placemarker/jQuery-MD5/master/jquery.md5.js"></script>
+
+
+<div id="main-content " class="wrap tpay">
+
+<h2>JAK ZAPŁACIĆ ZA TŁUMACZENIE</h2>
+Za tłumaczenie możesz zapłacić wpłacając gotówkę w Biurze lub dokonać tradycyjnego przelewu na wskazany przez nas numer rachunku. Możesz również zapłacić za pomocą systemu płatności online czyli zarówno kartą kredytową, BLIKiem lub przez swój bank.<br>
+Rozliczenia transakcji kartą kredytową i e-przelewem przeprowadzane są za pośrednictwem <strong>tpay.pl</strong>.<br>
+Akceptujemy płatności kartami płatniczymi: <strong>VISA, MasterCard, Maestro</strong>.<br><br>
+
+Nie pobieramy żadnych prowizji od Klienta przy wyborze tej formy płatności.<br><br>
+
+Wybierz sposób zapłaty najwygodniejszy dla siebie!<br><br>
+
+DANE DO PRZELEWU:<br>
+
+Numery kont:
+<ul>
+ 	<li>• PLN: 46 1240 5035 1111 0000 5564 3379</li>
+ 	<li>• IBAN: PL 46 1240 5035 1111 0000 5564 3379</li>
+ 	<li>• SWIFT: PKOPPLPW</li>
+</ul>
+	<br>
+Nazwa i adres odbiorcy przelewu:<br>
+
+Biuro Tłumaczeń Koliber ul. Zygmunta Augusta 11A, lok.503 81-359 Gdynia<br><br>
+
+W związku z faktem, iż wszystkie wyceny ustalane są indywidualnie, aby dokonać płatności za pomocą elektronicznych kanałów płatniczych, należy w poniższym formularzu podać:<br>
+<ul>
+ 	<li>• imię i nazwisko (nazwę firmy)</li>
+	<li>• adres e-mail (z którego otrzymaliśmy zlecenie)</li>
+ 	<li>• kwotę wycenionego tłumaczenia oraz preferowaną walutę płatności</li>
+ 	<li>• w tytule przelewu podaj rodzaj i kierunek tłumaczenia, nazwę dokumentu lub numer faktury (albo faktury proforma)</li>
+</ul><br>
+Przykład 1: Tłumaczenie przysięgłe umowy o pracę na angielski<br>
+
+Przykład 2: Tłumaczenie przysięgłe mandatu z niemieckiego<br>
+
+Przykład 3: Tłumaczenie przysięgłe dokumentów samochodowych z Francji<br>
+
+Przykład 4: Tłumaczenie CV na angielski<br>
+
+Przykład 5: Proforma nr 1/2020.<br><br>
+
+Po uzupełnieniu formularza i kliknięciu przycisku "Zapłać" zostaniecie Państwo przekierowani na zewnętrzną stronę dostawcy usługi elektronicznych kanałów płatniczych – <strong>tpay.pl.</strong><br><br>
+
+ 
+
+
+ 						<label for="amount">Imię i nazwisko:</label><br>
+						<input type="text" id="name" name="name" value='' required><br>
+
+						<label for="amount">Adres e-mail:</label><br>
+						<input type="text" id="email" name="email" value='' required><br>
+
+						<label for="amount">Kwota:</label><br>
+						<input type="text" id="amount" name="amount" value='' required><br>
+
+						<label for="description">Opis płatności:</label><br>
+						<input type="text" id="description" name="description" value=''  required > <br>
+
+
+  						<button class="senddotpay" >Zapłać</button>
+
+  						<div class="tpay-banner">
+   							<a href="https://tpay.com/jak-to-dziala" target="_blank" title="Obsługujemy płatności internetowe przez system płatności online Tpay"><img src="https://tpay.com/img/banners/tpay-768x90.svg" style="border:0" alt="Logo Tpay" title="Logo Tpay"/></a>
+  						</div>
+
+
+
+						<script>
+
+							  	$=jQuery;
+							  	$( document ).ready(function() {
+
+
+									$( ".senddotpay" ).click(function() {
+
+										var id = "50181";
+										var amount = $("#amount").val();
+										var desc = $("#description").val();
+										var email = $("#email").val();
+										var name = $("#name").val();
+										var code = "XfsgTfm7rhU011Vo";
+										var md5sum = $.md5(id + "&" + amount + "&" + "&" + code);
+										var url = "https://secure.tpay.com?id=" + id + "&amount=" + amount + "&name=" + name + "&email=" + email + "&description=" + desc + "&md5sum=" + md5sum;
+
+										window.open(url, '_blank');
+
+
+									});
+
+
+								});
+
+						</script>
+
+<br><br>Regulamin usług dostępny jest w zakładce <a href="https://koliber.expert/regulamin/">"Regulamin"</a>.<br>
+Jeśli zaś zechcecie Państwo skontaktować się z naszym konsultantem, odpowiednie dane kontaktowe odnaleźć można w zakładce <a href="https://koliber.expert/kontakt/">"Kontakt"</a>.<br><br>
+
+Gotowe tłumaczenia można odebrać w biurze lub za dodatkowa opłatą wysyłamy dokumenty na wskazany adres w Polsce i za granicą. Na prośbę klienta wysyłamy również skan przetłumaczonych dokumentów/skan tłumaczenia na podany adres e-mail.
+
+ 
+
+</div> <!-- #main-content -->
+
+<?php echo do_shortcode('[et_pb_section global_module="124"][/et_pb_section]'); ?>
+
+
+
+<style>
+	.wrap{
+		width: 95%;
+	    max-width: 1175px;
+	    margin: 0 auto;
+	    position: relative;
+	    padding: 10vh 0 20vh 0px;
+	}
+	.tpay input[type=text] {
+	    margin: 0;
+	    padding: 15px;
+	    margin-bottom: 15px;
+	    min-width: 50%;
+	}
+	.senddotpay {
+	    color: #ffffff!important;
+	    border-width: 2px!important;
+	    border-color: #000000;
+	    border-radius: 3px;
+	    font-size: 15px;
+	    background-color: #000000;
+	    padding-top: 20px!important;
+	    padding-right: 35px!important;
+	    padding-bottom: 20px!important;
+	    padding-left: 35px!important;
+	    font-weight: 600;
+	    letter-spacing: 1px;
+	    margin-top: 15px;
+	    transition: .3s;
+	    cursor: pointer;
+	}
+	.senddotpay:hover {
+		opacity: .7;
+	}
+</style>
+

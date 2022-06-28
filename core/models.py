@@ -46,10 +46,12 @@ KOLEJKA_CHOICE = (
     ("Kolejka 32", "Kolejka 32"),
     ("Kolejka 33", "Kolejka 33"),
     ("Kolejka 34", "Kolejka 34"),
+    ("Dodatkowe wydarzenie", "Dodatkowe Wydarzenie"),
 )
+
 RESULT = (
     ("za", "za"),
-    ("przeciw", 'przeciw'),
+    ("przeciw", "przeciw"),
 )
 
 
@@ -117,8 +119,6 @@ class Vote(models.Model):
     color_vote = models.CharField(
         max_length=200, choices=COLOR, blank=True, null=True)
 
-    
-    
     def update(self, *args, **kwargs):
         kwargs.update({"updated": timezone.now})
         super().update(*args, **kwargs)

@@ -6,6 +6,7 @@ from django.forms.widgets import PasswordInput, TextInput
 from .models import *
 
 
+
 class AnkietaForm(forms.ModelForm):
     class Meta:
         model = Ankieta
@@ -162,17 +163,7 @@ class NewUserForm(UserCreationForm):
 
 
 class PostForm(forms.ModelForm):
-    # kolejka = forms.CharField(
-    #         required=True,
-    #         widget=forms.TextInput(
-    #             attrs={
-    #                 "type": "text",
-    #                 "name": "body",
-    #                 "class": "form-control input-sm",
-    #                 "placeholder": "Kolejka",
-    #             }
-    #         ),
-    #     )
+
     body = forms.CharField(
         required=True,
         widget=forms.TextInput(
@@ -184,8 +175,6 @@ class PostForm(forms.ModelForm):
             }
         ),
     )
-
-    # created_on = forms.CharField(required=True,  widget= forms.TextInput(attrs={'type':'text', 'name':'email', 'class':'form-control input-sm', 'placeholder':'Data'}))
 
     class Meta:
         """Meta definition for Postform."""
