@@ -1,16 +1,14 @@
 {% extends 'core/main.html' %}
 {% block content %}
-<div class="container w-full mx-auto pt-20">
+<div class="container w-full mx-auto">
     <div class="w-full px-4 md:px-0 md:mt-8 mb-16 text-gray-800 leading-normal">
-        <br>
-        <br>
-        <br>
         <h2 class="text-white ml-3 items-center flex mb-10">Użytkownik: <b> {{ users }}</b></h2>
         <div class="container w-16 items-center">
         </div>
         <input id="search" class="form-control form-control-lg" type="text" placeholder="Wyszukaj...">
         <table id="myTable" style="background-color: #111827;" class="table table-dark container">
             <thead>
+          
                 <tr>
                     <th scope="col"><b>Nazwa Wydarzenia</b></th>
                     <th scope="col"><b>Użytkownik</b></th>
@@ -33,10 +31,10 @@
                         {{vote.name}}
                     </td>
                     <td class="text-capitalize" scope="row">
-                        {{vote.post.created_on}}
+                        {{vote.post.created_on | date:'Y-m-d H:i:s'}}
                     </td>
                     <td class="text-capitalize" scope="row">
-                        {{vote.updated}}
+                        {{vote.updated | date:'Y-m-d H:i:s'}}
                     </td>
                 </tr>
                 {% endif %}

@@ -24,9 +24,6 @@ from .forms import (
 from .models import Kolejka, Post, Profile, Regulation, Vote, Ankieta, Result
 
 
-def tpay(request):
-    return render(request, "core/tpay.html")
-
 
 def deleteResult(request, pk):
     result = Result.objects.get(id=pk)
@@ -278,7 +275,7 @@ def editVote(request, pk):
 @staff_member_required(login_url="login")
 def alluser(request):
     User = get_user_model()
-    users = User.objects.all()
+    users = User.objects.order_by("username").exclude(username='admin')
     context = {
         "users": users,
     }
@@ -295,6 +292,7 @@ def userdetail(request, pk):
         "votes": votes,
     }
     return render(request, "core/user/user-detail.html", context)
+
 
 
 @login_required(login_url="login")
@@ -316,9 +314,9 @@ def updatevote(request, pk):
 @login_required(login_url="login")
 def addvote(request, pk):
     form = VoteForm()
-    datetimes = datetime.now().strftime("%d.%m.%Y %H:%M")
+    datetimes = datetime.now().strftime("Y-m-d H:i:s")
     post = Post.objects.get(pk=pk)
-    posttimes = post.created_on.strftime("%d.%m.%Y %H:%M")
+    posttimes = post.created_on.strftime("Y-m-d H:i:s")
     votes = Vote.objects.all()
     votes.id = post.id
 
@@ -328,8 +326,8 @@ def addvote(request, pk):
             form.instance.author = request.user
             form.instance.post = post
             if form.instance.post.created_on.strftime(
-                "%d.%m.%Y %H:%M"
-            ) >= timezone.now().strftime("%d.%m.%Y %H:%M"):
+                "Y-m-d H:i:s"
+            ) >= timezone.now().strftime("Y-m-d H:i:s"):
                 form.save()
             else:
                 redirect("dash")

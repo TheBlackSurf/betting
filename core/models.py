@@ -11,6 +11,7 @@ COLOR = (
     ("Zielony", "Zielony"),
 )
 
+
 KOLEJKA_CHOICE = (
     ("Kolejka 1", "Kolejka 1"),
     ("Kolejka 2", "Kolejka 2"),

@@ -13,8 +13,9 @@
         width: 200px;
         padding: 10px;
     }
-    .brutus{
-        color:white;
+
+    .brutus {
+        color: white;
     }
 </style>
 <div style="margin-top: 100px;" class="container d-flex justify-content-center align-self-center mt-12">
@@ -30,21 +31,21 @@
                         Punkty!
                         <small></small></h3>
                 </div>
-                
+
                 <div class=" panel-body ">
                     <form role=" form " method="POST">
                         {% csrf_token %}
                         <div class=" form-group ">
                             <p class="brutus">Kolejka</p>
-                            {{form.name}}
+                            {{ form.name }}
                         </div>
                         <div class=" form-group ">
                             <p class="brutus">Użytkownik</p>
-                            {{form.user}}
+                            {{ form.user }}
                         </div>
                         <div class=" form-group ">
                             <p class="brutus">Punkty</p>
-                            {{form.point}}
+                            {{ form.point }}
                         </div>
                         <input type="submit" value="Dodaj Punkty" class="btn btn-info btn-block">
 
@@ -54,4 +55,3 @@
         </div>
     </div>
 </div>
-

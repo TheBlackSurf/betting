@@ -5,11 +5,19 @@ from .forms import ProfilePointForm
 from django.contrib.auth.decorators import login_required
 
 
+
 @login_required(login_url="login")
 def viewpoint(request):
     points = ProfilePoint.objects.all()
+    labels = []
+    data = []
+    for p in points:
+        labels.append(p.user.username)
+        data.append(p.gross)
     context = {
         'points': points,
+        'labels': labels,
+        'data': data,
     }
 
     return render(request, 'points/points.html', context)
