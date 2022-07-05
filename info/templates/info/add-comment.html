@@ -1,0 +1,44 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<style>
+    body {
+        background-color: #191919;
+    }
+
+    .logo {
+        text-align: center;
+        width: 200px;
+        padding: 10px;
+    }
+</style>
+<div style="margin-top: 100px;" class="container d-flex justify-content-center align-self-center mt-12">
+    <div class=" row centered-form align-self-center ">
+        <div class=" col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4 align-self-center ">
+            <div style=" background-color: #111827; border-radius: 20px;" class=" panel panel-default ">
+                <img class=" logo "
+                    src=" http://1.bp.blogspot.com/-vMN-nDGDvFg/Ucoylp9O-sI/AAAAAAAAae0/6wQq6KT65zQ/s1600/Ekstraklasa+logo+2013.png "
+                    alt=" ">
+                <!-- //asa -->
+                <div style=" background-color: #111827; color: aliceblue; " class=" panel-heading ">
+                    <h3 style=" background-color: #111827; color: aliceblue; " class=" panel-title text-white ">Dodaj
+                        Komentarz do <small></small></h3>
+                        <p>{{ info }}</p>
+                    </div>
+
+                <div class=" panel-body ">
+                    <form role=" form " method="POST">
+                        {% csrf_token %}
+                        <div class=" form-group ">
+                            <p style='color: white;'>Komentarz</p>
+                            {{form.body}}
+                        </div>
+                        <input type="submit" value="Dodaj Komentarz" class="btn btn-info btn-block">
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

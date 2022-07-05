@@ -18,6 +18,7 @@ def viewpoint(request):
         'points': points,
         'labels': labels,
         'data': data,
+        
     }
 
     return render(request, 'points/points.html', context)

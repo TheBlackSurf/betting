@@ -17,10 +17,56 @@
     <h3 class="pt-4">Tablica Ogłoszeń</h3>
     <div style="background-color: #111827;" class="bg-gray-600 text-white container rounded-4xl p-4">
         {% for i in infos  %}
-        <div class="bg-gray-800 p-4 rounded-2xl mt-2">
+        <div style='border-radius: 20px;' class="bg-gray-800 p-4 mt-2">
             <p>{{ i.created|date:'Y-m-d H:i:s' }}</p>
             <h3> {{ i.body }}</h3>
+            <h6 class='text-white'><b>Komentarze:</b></h6>
+            {% for c in i.comments.all  %}
+            <div class="container m-2 ">
+                <div style='border-radius: 100px;' class="d-flex justify-content-left row">
+                    <div class="col-md-8">
+                        <div class="d-flex flex-column comment-section">
+                            <div class=" p-2 bg-dark p-3 rounded-md">
+                                <div class="d-flex flex-row user-info">
+                                    <div class="d-flex flex-column 
+                                    justify-content-start ml-2">
 
+
+                                        <img style='border-radius: 100px; width: 40px; height: 40px; '
+                                            src="/media/{{c.profile.pic}}" alt="">
+                                        <span class="d-block font-weight-bold name mt-2">
+                                            <h6>{{c.author}}</h6>
+                                            <hr class='bg-white' style='margin-top: -3px;'>
+                                        </span>
+                                        <span class="date text-black-50"></span>
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <p style='font-family: saira' class="comment-text pl-2"><b>{{c.body}}</b></p>
+
+                                    {% if c.author == request.user %}
+                                    <a href="{% url 'rm-comment' c.id %}">Usuń</a>
+
+                                    {% endif %}
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+            <div class=" p-2">
+                <div class="mt-2 text-right">
+                    <a href="{% url 'comment' i.id %}">
+                        <button class="btn btn-primary btn-sm shadow-none" type="button">Dodaj
+                            Komentarz
+                        </button>
+                    </a>
+                </div>
+            </div>
             {% if user.is_superuser %}
             <a href="{% url 'editinfo' i.id %}">Edytuj</a>
             <a href="{% url 'deleteinfo' i.id %}">Usuń</a>

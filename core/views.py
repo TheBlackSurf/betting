@@ -1,14 +1,15 @@
 from datetime import datetime
-from multiprocessing import context
-
-from django.contrib import messages
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib.auth import authenticate, get_user_model, login, logout
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from points.models import ProfilePoint
+
+from django.contrib import messages
+from django.contrib.auth import authenticate, get_user_model, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 
 from .filters import PostFilter
+from .models import Kolejka, Post, Profile, Regulation, Vote, Ankieta, Result
 from .forms import (
     KolejkaForm,
     NewUserForm,
@@ -21,15 +22,12 @@ from .forms import (
     ResultForm,
     AnkietaForm,
 )
-from .models import Kolejka, Post, Profile, Regulation, Vote, Ankieta, Result
-
 
 
 def deleteResult(request, pk):
     result = Result.objects.get(id=pk)
     if request.method == "POST":
         if result.user == request.user:
-            print(result.ankieta.title)
             result.delete()
             return redirect("ankieta")
         else:
@@ -50,8 +48,9 @@ def editAnkieta(request, pk):
     if request.method == "POST":
         form = ResultForm(request.POST)
         if form.is_valid():
-            form.instance.user = request.user
+            form.instance.author = request.user
             form.instance.ankieta = ankieta
+            print(form.author)
             form.save()
             return redirect("ankieta")
     return render(
@@ -275,7 +274,7 @@ def editVote(request, pk):
 @staff_member_required(login_url="login")
 def alluser(request):
     User = get_user_model()
-    users = User.objects.order_by("username").exclude(username='admin')
+    users = User.objects.order_by("username").exclude(username="admin")
     context = {
         "users": users,
     }
@@ -292,7 +291,6 @@ def userdetail(request, pk):
         "votes": votes,
     }
     return render(request, "core/user/user-detail.html", context)
-
 
 
 @login_required(login_url="login")
@@ -345,6 +343,23 @@ def addvote(request, pk):
 
 @login_required(login_url="login")
 def postdetail(request):
+    points = ProfilePoint.objects.all()
+    labels = []
+    data = []
+    najwieksza = None
+
+    for p in points:
+        labels.append(p.user.username)
+        data.append(p.gross)
+
+    for i in data:
+        if najwieksza == None or najwieksza < i:
+            najwieksza = i
+
+    index = data.index(najwieksza)
+    # nameOfBest = labels.user.username[index]
+    nameBest = labels[index]
+
     post = Post.objects.order_by("-created_on")
     User = get_user_model()
     users = User.objects.all()
@@ -356,6 +371,8 @@ def postdetail(request):
         "users": users,
         "count": Post.objects.count(),
         "myFilter": myFilter,
+        "best_point": najwieksza,
+        "nameBest": nameBest,
     }
     return render(request, "core/dash.html", context)
 
